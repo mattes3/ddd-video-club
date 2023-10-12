@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  # set up a PostgreSQL database
+  db:
+    image: postgres:12
+    environment:
+      - POSTGRES_USER=videoclub
+      - POSTGRES_PASSWORD=videoclubpassword
+      - POSTGRES_DB=videoclubdb
+    # Maps port 5432 (localhost) to port 5432 on the container.
+    ports:
+      - '5432:5432'
+    # Database resides in a subdirectory of local directory "."
+    volumes:
+      - './postgres_data:/var/lib/postgresql/data'

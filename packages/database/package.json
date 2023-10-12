@@ -1,0 +1,13 @@
+{
+  "name": "@ddd-video-club/database",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo Nothing to build here. Just kidding."
+  },
+  "devDependencies": {
+    "@types/pg": "^8",
+    "knex": "^3.0.1",
+    "pg": "^8.11.3"
+  }
+}

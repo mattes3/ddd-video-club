@@ -1,0 +1,31 @@
+{
+    "name": "@ddd-video-club-v2/root",
+    "packageManager": "yarn@3.6.4",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "build": "yarn workspaces foreach -vpt run build",
+        "tsc": "yarn workspaces foreach -vpt run tsc",
+        "lint": "eslint packages/\\*\\*",
+        "prettier": "prettier --write ."
+    },
+    "workspaces": {
+        "packages": [
+            "packages/*"
+        ]
+    },
+    "devDependencies": {
+        "@types/eslint": "^8",
+        "@types/prettier": "^2",
+        "@typescript-eslint/eslint-plugin": ">=5.31.0",
+        "@typescript-eslint/parser": ">=5.31.0",
+        "eslint": ">=8.0.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-config-xo": "latest",
+        "eslint-config-xo-typescript": "latest",
+        "prettier": "2.7.1",
+        "process": "^0.11.10",
+        "typescript": "^5.1.6"
+    },
+    "author": "Matthias Bohlen <mbohlen@mbohlen.de>"
+}
