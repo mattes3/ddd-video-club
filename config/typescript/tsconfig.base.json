@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.codegen-settings.json",
+    "compilerOptions": {
+        "composite": true,
+        "paths": {
+            // specify paths your project consumes
+            "@ddd-video-club-v2/movies": ["./packages/movies"]
+        }
+    }
+}

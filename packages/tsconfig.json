@@ -1,0 +1,7 @@
+// packages/tsconfig.json
+{
+    "extends": "../config/typescript/tsconfig.base.json",
+    "files": [],
+    "include": [],
+    "references": [{ "path": "./movies" }]
+}
