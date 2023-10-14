@@ -3,5 +3,9 @@
     "extends": "../config/typescript/tsconfig.base.json",
     "files": [],
     "include": [],
-    "references": [{ "path": "./database" }, { "path": "./movies" }]
+    "references": [
+        { "path": "./database" }, 
+        { "path": "./movies" }
+        { "path": "./rental" }
+    ]
 }

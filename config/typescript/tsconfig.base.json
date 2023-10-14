@@ -5,7 +5,8 @@
         "paths": {
             // specify paths your project consumes
             "@ddd-video-club-v2/database": ["./packages/database"],
-            "@ddd-video-club-v2/movies": ["./packages/movies"]
+            "@ddd-video-club-v2/movies": ["./packages/movies"],
+            "@ddd-video-club-v2/rental": ["./packages/rental"]
         }
     }
 }

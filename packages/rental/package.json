@@ -1,0 +1,35 @@
+{
+  "name": "@ddd-video-club-v2/rental",
+  "version": "1.0.0",
+  "author": "Matthias Bohlen",
+  "private": true,
+  "scripts": {
+    "dev": "NODE_ENV=development PORT=4001 yarn node dist/src/main.js",
+    "build": "rimraf ./dist && tsc"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.2",
+    "@types/cookie-parser": "^1",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/morgan": "^1",
+    "@types/uuid": "^9",
+    "rimraf": "^3.0.2",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@ddd-video-club-v2/database": "workspace:^",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "express-wolox-logger": "^2.1.0",
+    "knex": "^3.0.1",
+    "morgan": "^1.10.0",
+    "nocache": "^3.0.4",
+    "objection": "^3.1.2",
+    "serialize-error": "^11.0.2",
+    "uuid": "^9.0.0"
+  },
+  "main": "./dist/src/index.js"
+}

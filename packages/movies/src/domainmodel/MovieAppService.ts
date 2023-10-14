@@ -1,5 +1,5 @@
 import type { MovieRepository } from './MovieRepository';
-import type { TransactionProvider } from './TransactionProvider';
+import type { TransactionProvider } from '@ddd-video-club-v2/database';
 import type { Movie } from './Movie';
 
 // @ReadModel
