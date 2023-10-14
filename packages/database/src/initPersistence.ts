@@ -30,8 +30,6 @@ export async function initKnexAndObjection() {
         return;
     }
 
-    console.log('-- 2 --');
     // Give the knex instance to objection.
     Model.knex(knex);
-    console.log('-- 3 --');
 }

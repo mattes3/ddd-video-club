@@ -1,7 +1,9 @@
 // @Entity
 export type Movie = {
+    id: string;
+
     /**
-     * How the movie is named
+     * What the movie is named
      */
     title: string;
 
