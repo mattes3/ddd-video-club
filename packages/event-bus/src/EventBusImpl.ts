@@ -10,6 +10,8 @@ export async function connectToEventBus(): Promise<EventBus> {
 			await ch2.assertQueue(eventTypeName);
 
 			ch2.sendToQueue(eventTypeName, Buffer.from(JSON.stringify(payload)));
+
+			await ch2.close();
 		},
 
 		async consumeEvents(eventTypeName, callback) {
