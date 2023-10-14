@@ -7,9 +7,5 @@
         "resolveJsonModule": true
     },
     "include": ["src"],
-    "references": [
-        {
-            "path": "../database"
-        },
-    ]
+    "references": []
 }

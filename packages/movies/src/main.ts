@@ -1,15 +1,23 @@
-import { logger } from "express-wolox-logger";
+import { logger } from 'express-wolox-logger';
+import { Model } from 'objection';
+import { initKnexAndObjection } from '@ddd-video-club-v2/database';
 
-import app from "./app";
+import api from './adapter/http/api';
+import { MovieRepositoryImpl } from './adapter/persistence/MovieRepositoryImpl';
+import { getMovieAppService } from './domainmodel/MovieAppService';
 
 async function server() {
 	try {
+		await initKnexAndObjection();
+
+		const appService = getMovieAppService(MovieRepositoryImpl, Model.transaction.bind(Model));
 		const port = process.env.PORT ?? 4000;
-		app.listen(port);
+
+		api(appService).listen(port);
 
 		return `API Dev server listening on port ${port}`;
 	} catch (error: unknown) {
-		logger.error("CustomerPingAPI_devServer error", error);
+		logger.error('Movie API devServer error', error);
 	}
 }
 

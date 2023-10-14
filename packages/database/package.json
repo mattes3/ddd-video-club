@@ -1,13 +1,23 @@
 {
-  "name": "@ddd-video-club/database",
+  "name": "@ddd-video-club-v2/database",
   "version": "1.0.0",
+  "author": "Matthias Bohlen",
   "private": true,
   "scripts": {
-    "build": "echo Nothing to build here. Just kidding."
+    "build": "rimraf ./dist && tsc"
   },
   "devDependencies": {
     "@types/pg": "^8",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
     "knex": "^3.0.1",
+    "objection": "^3.1.2",
     "pg": "^8.11.3"
-  }
+  },
+  "main": "./dist/src/index.js",
+  "files": [
+    "./dist/src/*"
+  ]
 }

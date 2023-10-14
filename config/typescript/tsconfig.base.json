@@ -4,6 +4,7 @@
         "composite": true,
         "paths": {
             // specify paths your project consumes
+            "@ddd-video-club-v2/database": ["./packages/database"],
             "@ddd-video-club-v2/movies": ["./packages/movies"]
         }
     }
