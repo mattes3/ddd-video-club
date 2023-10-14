@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@ddd-video-club-v2/database": "workspace:^",
+    "@ddd-video-club-v2/event-bus": "workspace:^",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

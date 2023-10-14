@@ -1,0 +1,21 @@
+{
+  "name": "@ddd-video-club-v2/event-bus",
+  "version": "1.0.0",
+  "author": "Matthias Bohlen",
+  "private": true,
+  "scripts": {
+    "build": "rimraf ./dist && tsc"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0",
+    "rimraf": "^3.0.2",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.3"
+  },
+  "main": "./dist/src/index.js",
+  "files": [
+    "./dist/src/*"
+  ]
+}

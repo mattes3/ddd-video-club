@@ -5,6 +5,7 @@
     "include": [],
     "references": [
         { "path": "./database" }, 
+        { "path": "./event-bus" }, 
         { "path": "./movies" }
         { "path": "./rental" }
     ]

@@ -27,7 +27,12 @@ module.exports = {
                 ecmaVersion: 'latest',
                 sourceType: 'module',
                 tsconfigRootDir: `${__dirname}/packages`,
-                project: ['database/tsconfig.json', 'movies/tsconfig.json', 'rental/tsconfig.json'],
+                project: [
+                    'database/tsconfig.json',
+                    'event-bus/tsconfig.json',
+                    'movies/tsconfig.json',
+                    'rental/tsconfig.json',
+                ],
             },
         },
     ],
