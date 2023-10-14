@@ -46,8 +46,8 @@ function buildViewingReadModel(movie: Movie | undefined): MovieViewingReadModel 
 
 // @ApplicationService
 export interface MovieAppService {
-    movies(): Promise<MovieSelectionReadModel[]>;
-    findMovie(movieId: string): Promise<MovieViewingReadModel | undefined>;
+    findMoviesToSelectFrom(): Promise<MovieSelectionReadModel[]>;
+    findMovieForViewing(movieId: string): Promise<MovieViewingReadModel | undefined>;
 }
 
 /**
@@ -58,11 +58,11 @@ export function getMovieAppService(
     transact: TransactionProvider,
 ): MovieAppService {
     return {
-        async movies() {
+        async findMoviesToSelectFrom() {
             return transact(async (trx) => repo.findMovies(trx).then(buildSelectionReadModels));
         },
 
-        async findMovie(movieId) {
+        async findMovieForViewing(movieId) {
             return transact(async (trx) =>
                 repo.getMovieById(trx, movieId).then(buildViewingReadModel),
             );

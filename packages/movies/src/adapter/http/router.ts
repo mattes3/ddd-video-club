@@ -14,11 +14,11 @@ export function router(appService: MovieAppService): Router {
 	r.get('/ping', nocache(), (_req, res) => res.type('text/plain').send('Pong!'));
 
 	r.get('/', nocache(), async (_req, res) => {
-		res.json(await appService.movies());
+		res.json(await appService.findMoviesToSelectFrom());
 	});
 
 	r.get('/:id', nocache(), async (req, res) => {
-		const movie = await appService.findMovie(req.params.id);
+		const movie = await appService.findMovieForViewing(req.params.id);
 
 		if (movie) {
 			res.json(movie);
