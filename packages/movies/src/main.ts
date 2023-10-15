@@ -15,7 +15,7 @@ async function server() {
 
 		api(appService).listen(port);
 
-		return `API Dev server listening on port ${port}`;
+		return `Movie API Dev server listening on port ${port}`;
 	} catch (error: unknown) {
 		logger.error('Movie API devServer error', error);
 	}

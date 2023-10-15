@@ -4,25 +4,27 @@ import { Model } from 'objection';
 
 import { connectToEventBus } from '@ddd-video-club-v2/event-bus';
 import api from './adapter/http/api';
-import { RentalRepositoryImpl } from './adapter/persistence/RentalRepositoryImpl';
-import { getRentalAppService } from './domainmodel/RentalAppService';
+import { AccountRepositoryImpl } from './adapter/persistence/AccountRepositoryImpl';
+import { getAccountAppService } from './domainmodel/AccountAppService';
 
 async function server() {
 	try {
 		await initKnexAndObjection();
 
-		const appService = getRentalAppService({
-			repo: RentalRepositoryImpl,
+		const appService = getAccountAppService({
+			repo: AccountRepositoryImpl,
 			transact: Model.transaction.bind(Model),
 			eventBus: await connectToEventBus(),
 		});
 
-		const port = process.env.PORT ?? 4001;
+		await appService.consumeMovieRentalPriced();
+
+		const port = process.env.PORT ?? 4002;
 		api(appService).listen(port);
 
-		return `Rental API Dev server listening on port ${port}`;
+		return `Account API Dev server listening on port ${port}`;
 	} catch (error: unknown) {
-		logger.error('Rental API devServer error', error);
+		logger.error('Account API devServer error', error);
 	}
 }
 
