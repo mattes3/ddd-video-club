@@ -1,0 +1,26 @@
+localhost:5000 {
+    log {
+        # format single_field common_log
+        output file ./caddy_logs/access.log
+    }
+
+    encode gzip
+
+    @static file
+
+    handle @static {
+        file_server
+    }
+
+    handle /api/movies* {
+        reverse_proxy localhost:4000
+    }
+
+    handle /api/rental* {
+        reverse_proxy localhost:4001
+    }
+
+    handle /api/accounts* {
+        reverse_proxy localhost:4002
+    }
+}

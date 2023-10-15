@@ -1,1 +1,1 @@
-curl -v http://localhost:4002/api/accounts/myaccount
+curl -v https://localhost:5000/api/accounts/myaccount

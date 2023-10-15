@@ -5,4 +5,4 @@ curl -v -X POST -H "Content-Type: application/json" -d '{
   "movieTitle": "Matrix",
   "startOfRental": "'$(TZ=UTC date "+%Y-%m-%dT%H:%M:%SZ")'",
   "endOfRental": "'$(TZ=UTC date -v+3d "+%Y-%m-%dT%H:%M:%SZ")'"
-}' http://localhost:4001/api/rentals
+}' https://localhost:5000/api/rentals
