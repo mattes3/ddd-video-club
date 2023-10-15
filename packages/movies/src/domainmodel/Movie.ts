@@ -32,5 +32,5 @@ export type Movie = {
     /**
      * Category, e.g. "Science Fiction", "Romance", "Action", ...
      */
-    category: string;
+    categoryName: string;
 };

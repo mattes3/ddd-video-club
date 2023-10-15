@@ -1,1 +1,1 @@
-export * from './domainmodel/Account';
+export * from './domainmodel/AccountOverviewReadModel';

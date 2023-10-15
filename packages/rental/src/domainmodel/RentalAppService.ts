@@ -3,6 +3,7 @@ import type { EventBus } from '@ddd-video-club-v2/event-bus';
 import { MOVIE_RENTED, type MovieRentedEvent } from '@ddd-video-club-v2/event-types';
 import type { Rental } from './Rental';
 import type { CreateRentalData, RentalRepository } from './RentalRepository';
+import type { RentalViewingReadModel } from './RentalReadModelTypes';
 
 export type RentMovieCommand = {
     customerId: string;
@@ -12,9 +13,6 @@ export type RentMovieCommand = {
     startOfRental: Date;
     endOfRental: Date;
 };
-
-// @ReadModel
-export type RentalViewingReadModel = Omit<Rental, 'createdAt' | 'updatedAt'>;
 
 // @ApplicationService
 export interface RentalAppService {

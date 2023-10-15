@@ -1,1 +1,1 @@
-export * from "./domainmodel/Movie";
+export * from './domainmodel/MovieReadModelTypes';

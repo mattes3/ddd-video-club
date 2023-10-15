@@ -11,6 +11,7 @@ postgres_data
 *.d.ts
 *.json
 *.jpg
+*.jpeg
 *.png
 *.ico
 *.gif
@@ -21,8 +22,11 @@ postgres_data
 *.txt
 *.pxm
 *.sql
+*.lock
 *.md
 *.tsbuildinfo
 *.stub
 *.sublime-project
 *.sublime-workspace
+Caddyfile
+*.log

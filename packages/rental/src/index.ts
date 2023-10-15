@@ -1,1 +1,1 @@
-export * from './domainmodel/Rental';
+export * from './domainmodel/RentalReadModelTypes';

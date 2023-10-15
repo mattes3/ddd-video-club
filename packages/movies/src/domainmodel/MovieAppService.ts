@@ -1,36 +1,17 @@
-import type { MovieRepository } from './MovieRepository';
 import type { TransactionProvider } from '@ddd-video-club-v2/database';
 import type { Movie } from './Movie';
-
-// @ReadModel
-export type MovieSelectionReadModel = {
-    id: string;
-    title: string;
-    description: string;
-    posterUrl: string;
-    publicationDate: Date;
-    category: string;
-};
-
-// @ReadModel
-export type MovieViewingReadModel = {
-    id: string;
-    title: string;
-    description: string;
-    videoUrl: string;
-    publicationDate: Date;
-    category: string;
-};
+import type { MovieRepository } from './MovieRepository';
+import type { MovieSelectionReadModel, MovieViewingReadModel } from './MovieReadModelTypes';
 
 // @Factory
 function buildSelectionReadModels(movies: Movie[]): MovieSelectionReadModel[] {
-    return movies.map(({ id, title, description, posterUrl, publicationDate, category }) => ({
+    return movies.map(({ id, title, description, posterUrl, publicationDate, categoryName }) => ({
         id,
         title,
         description,
         posterUrl,
         publicationDate,
-        category,
+        categoryName,
     }));
 }
 
@@ -40,8 +21,8 @@ function buildViewingReadModel(movie: Movie | undefined): MovieViewingReadModel 
         return undefined;
     }
 
-    const { id, title, description, videoUrl, publicationDate, category } = movie;
-    return { id, title, description, videoUrl, publicationDate, category };
+    const { id, title, description, videoUrl, publicationDate, categoryName } = movie;
+    return { id, title, description, videoUrl, publicationDate, categoryName };
 }
 
 // @ApplicationService
