@@ -28,9 +28,12 @@ module.exports = {
                 sourceType: 'module',
                 tsconfigRootDir: `${__dirname}/packages`,
                 project: [
+                    'accounting/tsconfig.json',
                     'database/tsconfig.json',
                     'event-bus/tsconfig.json',
+                    'event-types/tsconfig.json',
                     'movies/tsconfig.json',
+                    'pricing/tsconfig.json',
                     'rental/tsconfig.json',
                 ],
             },

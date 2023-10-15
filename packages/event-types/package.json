@@ -1,0 +1,17 @@
+{
+  "name": "@ddd-video-club-v2/event-types",
+  "version": "1.0.0",
+  "author": "Matthias Bohlen",
+  "private": true,
+  "scripts": {
+    "build": "rimraf ./dist && tsc"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^5.2.2"
+  },
+  "main": "./dist/src/index.js",
+  "files": [
+    "./dist/src/*"
+  ]
+}

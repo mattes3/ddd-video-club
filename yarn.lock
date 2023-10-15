@@ -23,6 +23,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ddd-video-club-v2/accounting@workspace:packages/accounting":
+  version: 0.0.0-use.local
+  resolution: "@ddd-video-club-v2/accounting@workspace:packages/accounting"
+  dependencies:
+    "@ddd-video-club-v2/database": "workspace:^"
+    "@ddd-video-club-v2/event-bus": "workspace:^"
+    "@ddd-video-club-v2/event-types": "workspace:^"
+    "@types/compression": ^1.7.2
+    "@types/cookie-parser": ^1
+    "@types/cors": ^2.8.12
+    "@types/express": ^4.17.13
+    "@types/morgan": ^1
+    "@types/uuid": ^9
+    compression: ^1.7.4
+    cookie-parser: ^1.4.6
+    cors: ^2.8.5
+    express: ^4.17.3
+    express-wolox-logger: ^2.1.0
+    knex: ^3.0.1
+    morgan: ^1.10.0
+    nocache: ^3.0.4
+    objection: ^3.1.2
+    rimraf: ^3.0.2
+    serialize-error: ^11.0.2
+    typescript: ^5.2.2
+    uuid: ^9.0.0
+  languageName: unknown
+  linkType: soft
+
 "@ddd-video-club-v2/database@workspace:^, @ddd-video-club-v2/database@workspace:packages/database":
   version: 0.0.0-use.local
   resolution: "@ddd-video-club-v2/database@workspace:packages/database"
@@ -47,11 +76,49 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ddd-video-club-v2/event-types@workspace:^, @ddd-video-club-v2/event-types@workspace:packages/event-types":
+  version: 0.0.0-use.local
+  resolution: "@ddd-video-club-v2/event-types@workspace:packages/event-types"
+  dependencies:
+    rimraf: ^3.0.2
+    typescript: ^5.2.2
+  languageName: unknown
+  linkType: soft
+
 "@ddd-video-club-v2/movies@workspace:packages/movies":
   version: 0.0.0-use.local
   resolution: "@ddd-video-club-v2/movies@workspace:packages/movies"
   dependencies:
     "@ddd-video-club-v2/database": "workspace:^"
+    "@types/compression": ^1.7.2
+    "@types/cookie-parser": ^1
+    "@types/cors": ^2.8.12
+    "@types/express": ^4.17.13
+    "@types/morgan": ^1
+    "@types/uuid": ^9
+    compression: ^1.7.4
+    cookie-parser: ^1.4.6
+    cors: ^2.8.5
+    express: ^4.17.3
+    express-wolox-logger: ^2.1.0
+    knex: ^3.0.1
+    morgan: ^1.10.0
+    nocache: ^3.0.4
+    objection: ^3.1.2
+    rimraf: ^3.0.2
+    serialize-error: ^11.0.2
+    typescript: ^5.2.2
+    uuid: ^9.0.0
+  languageName: unknown
+  linkType: soft
+
+"@ddd-video-club-v2/pricing@workspace:packages/pricing":
+  version: 0.0.0-use.local
+  resolution: "@ddd-video-club-v2/pricing@workspace:packages/pricing"
+  dependencies:
+    "@ddd-video-club-v2/database": "workspace:^"
+    "@ddd-video-club-v2/event-bus": "workspace:^"
+    "@ddd-video-club-v2/event-types": "workspace:^"
     "@types/compression": ^1.7.2
     "@types/cookie-parser": ^1
     "@types/cors": ^2.8.12

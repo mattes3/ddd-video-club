@@ -1,11 +1,11 @@
+import { initKnexAndObjection } from '@ddd-video-club-v2/database';
 import { logger } from 'express-wolox-logger';
 import { Model } from 'objection';
-import { initKnexAndObjection } from '@ddd-video-club-v2/database';
 
+import { connectToEventBus } from '@ddd-video-club-v2/event-bus';
 import api from './adapter/http/api';
 import { RentalRepositoryImpl } from './adapter/persistence/RentalRepositoryImpl';
 import { getRentalAppService } from './domainmodel/RentalAppService';
-import { connectToEventBus } from '@ddd-video-club-v2/event-bus';
 
 async function server() {
 	try {

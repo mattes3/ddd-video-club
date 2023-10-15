@@ -7,15 +7,5 @@
         "resolveJsonModule": true
     },
     "include": ["src"],
-    "references": [
-        {
-            "path": "../database"
-        },
-        {
-            "path": "../event-bus"
-        },
-        {
-            "path": "../event-types"
-        },
-    ]
+    "references": []
 }

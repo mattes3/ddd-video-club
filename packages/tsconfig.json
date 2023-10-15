@@ -4,9 +4,12 @@
     "files": [],
     "include": [],
     "references": [
+        { "path": "./accounting" }, 
         { "path": "./database" }, 
         { "path": "./event-bus" }, 
+        { "path": "./event-types" }, 
         { "path": "./movies" }
+        { "path": "./pricing" }
         { "path": "./rental" }
     ]
 }

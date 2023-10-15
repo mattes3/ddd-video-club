@@ -4,9 +4,12 @@
         "composite": true,
         "paths": {
             // specify paths your project consumes
+            "@ddd-video-club-v2/accounting": ["./packages/accounting"],
             "@ddd-video-club-v2/database": ["./packages/database"],
             "@ddd-video-club-v2/event-bus": ["./packages/event-bus"],
+            "@ddd-video-club-v2/event-types": ["./packages/event-types"],
             "@ddd-video-club-v2/movies": ["./packages/movies"],
+            "@ddd-video-club-v2/pricing": ["./packages/pricing"],
             "@ddd-video-club-v2/rental": ["./packages/rental"]
         }
     }

@@ -1,5 +1,6 @@
 import type { TransactionProvider } from '@ddd-video-club-v2/database';
 import type { EventBus } from '@ddd-video-club-v2/event-bus';
+import { MOVIE_RENTED, type MovieRentedEvent } from '@ddd-video-club-v2/event-types';
 import type { Rental } from './Rental';
 import type { CreateRentalData, RentalRepository } from './RentalRepository';
 
@@ -69,7 +70,7 @@ export function getRentalAppService({
                 repo.createRental(trx, buildEntityFromCommand(command)),
             );
 
-            await eventBus.sendEvent('MOVIE_RENTED', {
+            const event: MovieRentedEvent = {
                 rentalId: rental.id,
                 movieId: rental.movieId,
                 movieCategoryName: rental.movieCategoryName,
@@ -77,7 +78,9 @@ export function getRentalAppService({
                 customerId: rental.customerId,
                 startOfRentalPeriod: rental.rentalStart,
                 daysRented: rental.rentalDays,
-            });
+            };
+
+            await eventBus.sendEvent(MOVIE_RENTED, event);
 
             return rental.id;
         },
