@@ -45,7 +45,7 @@ export const AccountRepositoryImpl: AccountRepository = {
 	},
 
 	async getAccountByCustomerId(trx, customerId) {
-		return AccountModel.query(trx).findOne({ customerId }).withGraphJoined('entries').debug();
+		return AccountModel.query(trx).findOne({ customerId }).withGraphFetched('entries').debug();
 	},
 
 	async updateAccount(trx, accountId, accountInput) {
