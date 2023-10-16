@@ -8,4 +8,4 @@ Examples:
 - Rental posts a MOVIE_RENTED event.
 - Pricing consumes it.
 - Pricing calculates the price and posts a MOVIE_RENTAL_PRICED event.
-- Accounting consumes the MOVIE_RENTAL_PRICED and creates an entry on the user's account.
+- Accounting consumes MOVIE_RENTAL_PRICED and creates an entry on the user's account.
