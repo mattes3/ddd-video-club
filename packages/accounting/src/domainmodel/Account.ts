@@ -62,7 +62,7 @@ export const createEntryForAccount = (account: Account) =>
         };
     };
 
-// implementation of Account.createEntry()
+// implementation of Account.updateBalance()
 export const updateBalanceInAccount = (account: Account) =>
     function (entry: Entry): void {
         account.balance += entry.amount;
