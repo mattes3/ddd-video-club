@@ -12,3 +12,5 @@ Kind of "poor man's Netflix".
 It demonstrates how to design such a thing using DDD, and how to implement it in TypeScript
 on NodeJS, using the principles of the "ports and adapters" architectural style, as described by
 Alistair Cockburn.
+
+![Screenshot of the frontend](./screenshot.png)
