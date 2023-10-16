@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@ddd-video-club-v2/accounting": "workspace:^",
+    "@ddd-video-club-v2/movies": "workspace:^",
+    "@ddd-video-club-v2/rental": "workspace:^",
     "@headlessui/react": "^1.6.4",
     "@heroicons/react": "^1.0.6",
     "@tanstack/react-query": "^4.36.1",
@@ -41,9 +44,6 @@
     ]
   },
   "devDependencies": {
-    "@ddd-video-club-v2/accounting": "workspace:^",
-    "@ddd-video-club-v2/movies": "workspace:^",
-    "@ddd-video-club-v2/rental": "workspace:^",
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/typography": "^0.5.2",
