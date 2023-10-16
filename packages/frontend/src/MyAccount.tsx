@@ -29,9 +29,9 @@ export const MyAccount: React.FC = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th style={{ textAlign: 'left' }}>Date</th>
-                            <th style={{ textAlign: 'left' }}>Title</th>
-                            <th style={{ textAlign: 'right' }}>Amount</th>
+                            <th className="text-left">Date</th>
+                            <th className="text-left">Title</th>
+                            <th className="text-right">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
