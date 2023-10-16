@@ -1,5 +1,7 @@
 # ddd-video-club
 
+![Screenshot of the frontend](./docs/screenshot.png)
+
 Sample for [Matthias Bohlen](https://mbohlen.de)'s 
 [Domain-Driven Design class](https://mbohlen.de/domain-driven-design-cpsa-a/)
 (iSAQB Advanced Level).
@@ -12,8 +14,6 @@ Kind of "poor man's Netflix".
 It demonstrates how to design such a thing using DDD, and how to implement it in TypeScript
 on NodeJS, using the principles of the "ports and adapters" architectural style, as described by
 Alistair Cockburn.
-
-![Screenshot of the frontend](./screenshot.png)
 
 ## Packages in the `packages` directory
 
@@ -31,6 +31,8 @@ Additionally, there are 3 technological modules:
 - Reverse Proxy (using Caddy Server)
 
 Finally, there is a frontend using React and Tailwind.
+
+![Application architecture](./docs/application-architecture.png)
 
 ## How to build
 
