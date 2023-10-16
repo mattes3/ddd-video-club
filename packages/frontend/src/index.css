@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-th, td {
-    @apply p-3
+th,
+td {
+    @apply p-3;
 }
 
 .btn-primary {
@@ -20,4 +21,8 @@ th, td {
 
 .btn-secondary-outline {
     @apply h-10 inline-flex items-center px-4 py-2 border border-secondary-300 shadow-sm text-base font-medium rounded-md text-secondary-700 bg-transparent hover:bg-secondary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500;
+}
+
+button[type='button'].react-calendar__tile--now {
+    @apply text-white bg-primary-600;
 }
