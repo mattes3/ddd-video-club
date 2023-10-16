@@ -143,7 +143,8 @@ to see how much you will have to pay this month. If you find this too expensive,
 insert a row into the discount_campaigns table:
 
 ```SQL
-INSERT INTO dddvc.discount_campaigns(campaign_title, starting_from, valid_thru, movie_category_name, percentage)
+INSERT INTO dddvc.discount_campaigns
+(campaign_title, starting_from, valid_thru, movie_category_name, percentage)
 VALUES (
 	'SF discount',
 	now(),
