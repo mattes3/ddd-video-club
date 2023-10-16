@@ -24,10 +24,11 @@ The app consists of the following conceptual modules:
 - Pricing (using NodeJS)
 - Accounting (using NodeJS)
 
-Additionally, there are 2 technological modules:
+Additionally, there are 3 technological modules:
 
 - Database (using PostgreSQL)
 - Event Bus (using RabbitMQ)
+- Reverse Proxy (using Caddy Server)
 
 Finally, there is a frontend using React and Tailwind.
 
