@@ -41,26 +41,26 @@ class AccountModel extends Model {
 
 export const AccountRepositoryImpl: AccountRepository = {
 	async addEntryToAccount(trx, entry) {
-		return EntryModel.query(trx).insert(entry).returning('*').debug();
+		return EntryModel.query(trx).insert(entry).returning('*');
 	},
 
 	async getAccountByCustomerId(trx, customerId) {
-		return AccountModel.query(trx).findOne({ customerId }).withGraphFetched('entries').debug();
+		return AccountModel.query(trx).findOne({ customerId }).withGraphFetched('entries');
 	},
 
 	async updateAccount(trx, accountId, accountInput) {
-		return AccountModel.query(trx).updateAndFetchById(accountId, accountInput).debug();
+		return AccountModel.query(trx).updateAndFetchById(accountId, accountInput);
 	},
 
 	async createAccount(trx, accountInput) {
-		return AccountModel.query(trx).insert(accountInput).returning('*').debug();
+		return AccountModel.query(trx).insert(accountInput).returning('*');
 	},
 
 	async findAccounts(trx) {
-		return AccountModel.query(trx).debug();
+		return AccountModel.query(trx);
 	},
 
 	async getAccountById(trx, accountId) {
-		return AccountModel.query(trx).findById(accountId).debug();
+		return AccountModel.query(trx).findById(accountId);
 	},
 };

@@ -9,7 +9,7 @@
   "devDependencies": {
     "@types/amqplib": "^0",
     "rimraf": "^3.0.2",
-    "typescript": "^5.2.2"
+    "typescript": "<5.2.0"
   },
   "dependencies": {
     "amqplib": "^0.10.3"

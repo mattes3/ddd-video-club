@@ -26,7 +26,7 @@ function buildEntityFromCommand(command: RentMovieCommand): CreateRentalData {
         command;
 
     const timeDifference = endOfRental.getTime() - startOfRental.getTime();
-    const rentalDays = timeDifference / (1000 * 60 * 60 * 24);
+    const rentalDays = Math.max(1, Math.ceil(timeDifference / (1000 * 60 * 60 * 24)));
 
     return {
         customerId,

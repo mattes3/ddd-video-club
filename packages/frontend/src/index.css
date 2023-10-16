@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+th, td {
+    @apply p-3
+}
+
+.btn-primary {
+    @apply h-10 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500;
+}
+
+.btn-primary-outline {
+    @apply h-10 inline-flex items-center px-4 py-2 border border-primary-300 shadow-sm text-base font-medium rounded-md text-primary-700 bg-transparent hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500;
+}
+
+.btn-secondary {
+    @apply h-10 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-secondary-600 hover:bg-secondary-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500;
+}
+
+.btn-secondary-outline {
+    @apply h-10 inline-flex items-center px-4 py-2 border border-secondary-300 shadow-sm text-base font-medium rounded-md text-secondary-700 bg-transparent hover:bg-secondary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500;
+}
