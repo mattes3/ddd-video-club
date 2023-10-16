@@ -139,4 +139,19 @@ yarn dev
 See the frontend open on http://localhost:3000/
 
 Choose one of the three movies, rent it for 5 days and click on "Your account"
-to see how much you will have to pay this month.
+to see how much you will have to pay this month. If you find this too expensive,
+insert a row into the discount_campaigns table:
+
+```SQL
+INSERT INTO dddvc.discount_campaigns(campaign_title, starting_from, valid_thru, movie_category_name, percentage)
+VALUES (
+	'SF discount',
+	now(),
+	now() + interval '7 days',
+	'Science Fiction',
+	20
+);
+```
+
+This will introduce a 20% discount on Science Fiction movies for the next 7 days.
+Try to rent the Matrix movie once more and inspect your account again.
