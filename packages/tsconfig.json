@@ -8,8 +8,8 @@
         { "path": "./database" }, 
         { "path": "./event-bus" }, 
         { "path": "./event-types" }, 
-        { "path": "./movies" }
-        { "path": "./pricing" }
+        { "path": "./movies" },
+        { "path": "./pricing" },
         { "path": "./rental" }
     ]
 }

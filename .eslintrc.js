@@ -34,6 +34,7 @@ module.exports = {
                     'event-types/tsconfig.json',
                     'movies/tsconfig.json',
                     'pricing/tsconfig.json',
+                    'pricing/test/tsconfig.json',
                     'rental/tsconfig.json',
                 ],
             },

@@ -158,4 +158,21 @@ VALUES (
 ```
 
 This will introduce a 20% discount on Science Fiction movies for the next 7 days.
+
 Try to rent the Matrix movie once more and inspect your account again.
+
+## Run the integration test in Pricing
+
+The Pricing module has an integration test at the application
+service level, with mock objects to substitute the event bus and
+the database during the test. The purpose is to show how the ports-and-adapters
+style keeps such applications testable.
+
+Run it like this:
+
+```
+cd packages/pricing
+yarn test
+```
+
+Terminate the test with the `q` key on your keyboard.
