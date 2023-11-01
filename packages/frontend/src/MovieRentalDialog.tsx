@@ -27,7 +27,7 @@ export const MovieRentalDialog: React.FC<MovieRentalDialogProps> = (props) => {
             <div className="fixed inset-0 flex items-center justify-center p-4">
                 {/* The actual dialog panel  */}
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                    <Dialog.Title className="text-lg text-center font-medium leading-6 text-gray-900">{`"${props.title}" anschauen`}</Dialog.Title>
+                    <Dialog.Title className="text-lg text-center font-medium leading-6 text-gray-900">{`Watch "${props.title}"`}</Dialog.Title>
                     <div className="flex flex-col items-center">
                         <p className="py-8">Until when do you want to rent this movie?</p>
                         <Calendar onChange={setRentalEndDate} value={rentalEndDate} />
