@@ -1,4 +1,5 @@
 // @ReadModel
+// @ValueObject
 export type MovieSelectionReadModel = {
     id: string;
     title: string;
@@ -9,6 +10,7 @@ export type MovieSelectionReadModel = {
 };
 
 // @ReadModel
+// @ValueObject
 export type MovieViewingReadModel = {
     id: string;
     title: string;
