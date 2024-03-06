@@ -164,7 +164,10 @@ Try to rent the Matrix movie once more and inspect your account again.
 ## Automate the start of the 4 microservices and the 3 infrastructure processes
 
 There is a configuration file for tmuxinator in this directory. It is
-called `.tmuxinator.yml`. It starts all necessary processes in the right
+called `.tmuxinator.yml`. (Thanks to @AlexZeitler who generously provided
+this file.)
+
+It starts all necessary processes in the right
 order. First, the database, the event bus, and the reverse proxy come up.
 Then, the 4 microservices start. At last, the frontend starts and begins
 to use the 4 microservices via the reverse proxy.
