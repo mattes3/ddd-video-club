@@ -161,6 +161,19 @@ This will introduce a 20% discount on Science Fiction movies for the next 7 days
 
 Try to rent the Matrix movie once more and inspect your account again.
 
+## Automate the start of the 4 microservices and the 3 infrastructure processes
+
+There is a configuration file for tmuxinator in this directory. It is
+called `.tmuxinator.yml`. It starts all necessary processes in the right
+order. First, the database, the event bus, and the reverse proxy come up.
+Then, the 4 microservices start. At last, the frontend starts and begins
+to use the 4 microservices via the reverse proxy.
+
+More info:
+
+- https://github.com/tmuxinator/tmuxinator
+- https://man7.org/linux/man-pages/man1/tmux.1.html
+
 ## Run the integration test in Pricing
 
 The Pricing module has an integration test at the application

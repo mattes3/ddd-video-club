@@ -1,0 +1,74 @@
+name: ddd-video-club
+root: ./
+
+# Runs before everything. Use it to start daemons etc.
+on_project_start: echo starting stack...
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: rbenv shell 2.0.0-p247
+
+# Pass command line options to tmux. Useful for specifying a different tmux.conf.
+# tmux_options: -f ~/.tmux.mac.conf
+
+# Specifies (by name or index) which window will be selected on project startup. If not set, the first window is used.
+# startup_window: input
+
+windows:
+  - workspace:
+      layout: even-vertical
+      panes:
+        - workspace:
+            - printf '\033]2;%s\033\\' 'workspace'
+            - clear
+  - services1:
+      layout: even-vertical
+      panes:
+        - rental:
+          - printf '\033]2;%s\033\\' 'rental'
+          - sleep 30
+          - cd packages/rental
+          - yarn dev
+        - movies:
+          - printf '\033]2;%s\033\\' 'movies'
+          - sleep 30
+          - cd packages/movies
+          - yarn dev
+  - services2:
+      layout: even-vertical
+      panes:
+        - pricing:
+          - printf '\033]2;%s\033\\' 'pricing'
+          - sleep 30
+          - cd packages/pricing
+          - yarn dev
+        - accounting:
+          - printf '\033]2;%s\033\\' 'accounting'
+          - sleep 30
+          - cd packages/accounting
+          - yarn dev
+  - infrastructure:
+      layout: even-vertical
+      panes:
+        - database:
+            - printf '\033]2;%s\033\\' 'database'
+            - cd packages/database
+            - docker compose up -d
+            - sleep 25
+            - yarn knex migrate:latest
+        - eventbus:
+            - printf '\033]2;%s\033\\' 'eventbus'
+            - cd packages/event-bus
+            - docker compose up
+        - reverse-proxy:
+            - printf '\033]2;%s\033\\' 'reverse-proxy'
+            - cd packages/reverse-proxy
+            - caddy run
+  - frontend:
+      layout: even-vertical
+      panes:
+        - frontend:
+            - printf '\033]2;%s\033\\' 'frontend'
+            - sleep 35
+            - cd packages/frontend
+            - yarn dev
+            - clear
