@@ -2,7 +2,7 @@
 
 ![Screenshot of the frontend](./docs/screenshot.png)
 
-Sample for [Matthias Bohlen](https://mbohlen.de)'s 
+Sample for [Matthias Bohlen](https://mbohlen.de)'s
 [Domain-Driven Design class](https://mbohlen.de/domain-driven-design-cpsa-a/)
 (iSAQB Advanced Level).
 
@@ -39,7 +39,7 @@ Finally, there is a frontend using React and Tailwind.
 Install Node. Then go to the root folder of this project here and type
 
 ```
-corepack enable
+corepack enable # I had to run "npm install -g corepack" before this worked ... what is corepack for anyway?
 yarn
 yarn build
 ```
@@ -76,7 +76,7 @@ Done in 23s 8ms
 ```
 cd packages/database
 docker-compose up -d
-sleep 30
+sleep 30 # this sleep is very suspicious. Can you explain it?
 yarn knex migrate:latest
 ```
 
@@ -88,6 +88,8 @@ docker-compose up -d
 ```
 
 ### Start the API servers
+
+# Oh, so each "package" has its own (Express) server? That is very strong decoupling between the (sub)domains at the cost of some developer experience because now I have to start each server on its own. Maybe document the tradeoffs this architecture makes somewhere?
 
 1) Open a new terminal and type this:
 
@@ -119,7 +121,9 @@ yarn dev
 
 ### Start the reverse proxy
 
-Install [Caddy server](https://caddyserver.com/) on your local machine. 
+Install [Caddy server](https://caddyserver.com/) on your local machine.
+
+# Another thing I have to do because each (sub)domain has its own webserver...
 
 On a Mac, using Homebrew, it works with `brew install caddy`.
 
@@ -192,3 +196,17 @@ yarn test
 ```
 
 Terminate the test with the `q` key on your keyboard.
+
+
+# Tom's verdict:
+# I find the structure of the code very understandable, it could have come from my book :).
+# However, the dev experience feels more like working with microservices than working with DDD
+# because each module has its own webserver. That's not bad per se, but it opens the architecture
+# to an attack vector like "Why do I have to start 4 web servers during development? That's way too
+# much effort!". It feels like overhead for a small application like this (but then again, example
+# applications are always small). Maybe think about documenting some architecture decisions in the README
+# that show the tradeoffs you made when coming up with this architecture. That makes it clear that
+# this is not the "one architecture" everyone must follow, but that it's just one form of a DDD
+# architecture that was chosen because of certain reasons.
+
+# The code and structure is clear, the application works locally.
