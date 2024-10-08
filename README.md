@@ -2,7 +2,7 @@
 
 ![Screenshot of the frontend](./docs/screenshot.png)
 
-Sample for [Matthias Bohlen](https://mbohlen.de)'s 
+Sample for [Matthias Bohlen](https://mbohlen.de)'s
 [Domain-Driven Design class](https://mbohlen.de/domain-driven-design-cpsa-a/)
 (iSAQB Advanced Level).
 
@@ -119,7 +119,7 @@ yarn dev
 
 ### Start the reverse proxy
 
-Install [Caddy server](https://caddyserver.com/) on your local machine. 
+Install [Caddy server](https://caddyserver.com/) on your local machine.
 
 On a Mac, using Homebrew, it works with `brew install caddy`.
 
@@ -171,6 +171,12 @@ It starts all necessary processes in the right
 order. First, the database, the event bus, and the reverse proxy come up.
 Then, the 4 microservices start. At last, the frontend starts and begins
 to use the 4 microservices via the reverse proxy.
+
+Start tmuxinator with the following command:
+
+```
+tmuxinator start
+```
 
 More info:
 
