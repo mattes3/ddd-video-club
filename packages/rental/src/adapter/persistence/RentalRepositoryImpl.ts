@@ -1,7 +1,8 @@
+import { withTransactionFor } from '@ddd-video-club-v2/database';
 import { Model } from 'objection';
+
 import type { Rental } from '../../domainmodel/Rental';
 import type { RentalRepository } from '../../domainmodel/RentalRepository';
-import { withTransactionFor } from '@ddd-video-club-v2/database';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface RentalModel extends Rental {}

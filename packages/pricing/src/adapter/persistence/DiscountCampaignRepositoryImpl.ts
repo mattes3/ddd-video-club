@@ -1,7 +1,8 @@
+import { withTransactionFor } from '@ddd-video-club-v2/database';
 import { Model } from 'objection';
+
 import type { DiscountCampaign } from '../../domainmodel/DiscountCampaign';
 import type { DiscountCampaignRepository } from '../../domainmodel/DiscountCampaignRepository';
-import { withTransactionFor } from '@ddd-video-club-v2/database';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface DiscountCampaignModel extends DiscountCampaign {}
