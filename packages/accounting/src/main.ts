@@ -8,24 +8,23 @@ import { AccountRepositoryImpl } from './adapter/persistence/AccountRepositoryIm
 import { getAccountAppService } from './domainmodel/AccountAppService';
 
 async function server() {
-	try {
-		await initKnexAndObjection();
+    try {
+        await initKnexAndObjection();
 
-		const appService = getAccountAppService({
-			repo: AccountRepositoryImpl,
-			transact: Model.transaction.bind(Model),
-			eventBus: await connectToEventBus(),
-		});
+        const appService = getAccountAppService({
+            transact: AccountRepositoryImpl,
+            eventBus: await connectToEventBus(),
+        });
 
-		await appService.consumeMovieRentalPriced();
+        await appService.consumeMovieRentalPriced();
 
-		const port = process.env.PORT ?? 4002;
-		api(appService).listen(port);
+        const port = process.env.PORT ?? 4002;
+        api(appService).listen(port);
 
-		return `Account API Dev server listening on port ${port}`;
-	} catch (error: unknown) {
-		logger.error('Account API devServer error', error);
-	}
+        return `Account API Dev server listening on port ${port}`;
+    } catch (error: unknown) {
+        logger.error('Account API devServer error', error);
+    }
 }
 
 server().then(console.log).catch(console.error);

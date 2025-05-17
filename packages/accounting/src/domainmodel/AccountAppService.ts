@@ -1,7 +1,8 @@
-import type { TransactionProvider } from '@ddd-video-club-v2/database';
+import { type TransactionOnRepoProvider } from '@ddd-video-club-v2/database';
 import type { EventBus } from '@ddd-video-club-v2/event-bus';
 import { MOVIE_RENTAL_PRICED, type MovieRentalPricedEvent } from '@ddd-video-club-v2/event-types';
 import type { Transaction } from 'objection';
+
 import type { Account } from './Account';
 import { buildOverviewReadModel, type AccountOverviewReadModel } from './AccountOverviewReadModel';
 import type { AccountRepository } from './AccountRepository';
@@ -58,12 +59,10 @@ export interface AccountAppService {
  * Inject the necessary dependencies and return a fully usable application service.
  */
 export function getAccountAppService({
-    repo,
     transact,
     eventBus,
 }: {
-    repo: AccountRepository;
-    transact: TransactionProvider;
+    transact: TransactionOnRepoProvider<AccountRepository>;
     eventBus: EventBus;
 }): AccountAppService {
     return {
@@ -71,9 +70,8 @@ export function getAccountAppService({
             await eventBus.consumeEvents(
                 MOVIE_RENTAL_PRICED,
                 async (movieRentalPriced: MovieRentalPricedEvent) => {
-                    await transact(async (trx) => {
+                    await transact(async (repo) => {
                         const account = await repo.getAccountByCustomerId(
-                            trx,
                             movieRentalPriced.customerId,
                         );
                         if (!account) {
@@ -83,52 +81,52 @@ export function getAccountAppService({
                         const { movieTitle, movieCategoryName, daysRented } = movieRentalPriced;
 
                         const title = `${movieTitle} (${movieCategoryName}), ${daysRented} days`;
-                        return internalCreateEntry(trx, account, title, -movieRentalPriced.price);
+                        return internalCreateEntry(repo, account, title, -movieRentalPriced.price);
                     });
                 },
             );
         },
 
         async accountOverviewForCustomer(customerId) {
-            return transact(async (trx) =>
-                repo.getAccountByCustomerId(trx, customerId).then(buildOverviewReadModel),
+            return transact(async (repo) =>
+                repo.getAccountByCustomerId(customerId).then(buildOverviewReadModel),
             );
         },
 
         async createAccount(customerId) {
-            return transact(async (trx) => repo.createAccount(trx, { customerId, balance: 0 }));
+            return transact(async (repo) => repo.createAccount({ customerId, balance: 0 }));
         },
 
         async findAccount(accountId) {
-            return transact(async (trx) => repo.getAccountById(trx, accountId));
+            return transact(async (repo) => repo.getAccountById(accountId));
         },
 
         async enter(accountId, title, amount) {
-            return transact(async (trx) => {
-                const account = await repo.getAccountById(trx, accountId);
+            return transact(async (repo) => {
+                const account = await repo.getAccountById(accountId);
                 if (!account) {
                     throw new Error('invalid accountId');
                 }
 
                 let entry = account.createEntry(title, amount);
-                entry = await repo.addEntryToAccount(trx, entry);
+                entry = await repo.addEntryToAccount(entry);
 
                 account.updateBalance(entry);
-                await repo.updateAccount(trx, account.id, { balance: account.balance });
+                await repo.updateAccount(account.id, { balance: account.balance });
             });
         },
     };
 
     async function internalCreateEntry(
-        trx: Transaction,
+        repo: AccountRepository,
         account: Account,
         title: string,
         amount: number,
     ) {
         let entry = account.createEntry(title, amount);
-        entry = await repo.addEntryToAccount(trx, entry);
+        entry = await repo.addEntryToAccount(entry);
 
         account.updateBalance(entry);
-        await repo.updateAccount(trx, account.id, { balance: account.balance });
+        await repo.updateAccount(account.id, { balance: account.balance });
     }
 }

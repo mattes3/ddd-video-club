@@ -7,7 +7,7 @@ import 'react-calendar/dist/Calendar.css';
 export interface MovieRentalDialogProps {
     title: string;
     open: boolean;
-    onClose: Function;
+    onClose: VoidFunction;
     onMovieRental: (rentalEndDate: Date) => void;
 }
 

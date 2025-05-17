@@ -3,6 +3,7 @@
     "packageManager": "yarn@3.6.4",
     "version": "1.0.0",
     "private": true,
+    "type": "module",
     "scripts": {
         "build": "yarn workspaces foreach -vpt run build",
         "tsc": "yarn workspaces foreach -vpt run tsc",
@@ -15,17 +16,13 @@
         ]
     },
     "devDependencies": {
-        "@types/eslint": "^8",
+        "@eslint/js": "^9.27.0",
         "@types/prettier": "^2",
-        "@typescript-eslint/eslint-plugin": ">=5.31.0",
-        "@typescript-eslint/parser": ">=5.31.0",
-        "eslint": ">=8.0.0",
-        "eslint-config-prettier": "^8.5.0",
-        "eslint-config-xo": "latest",
-        "eslint-config-xo-typescript": "latest",
+        "eslint": "^9.27.0",
         "prettier": "2.7.1",
         "process": "^0.11.10",
-        "typescript": "<5.2.0"
+        "typescript": "<5.2.0",
+        "typescript-eslint": "^8.32.1"
     },
     "main": "index.js",
     "author": "Matthias Bohlen <mbohlen@mbohlen.de>"

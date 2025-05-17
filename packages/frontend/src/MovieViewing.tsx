@@ -11,7 +11,7 @@ const MOVIE_VIEWING_QUERY = (movieId: string | undefined) => [
     { movieId: String(movieId) },
 ];
 
-export const MovieViewing: React.FC<{}> = () => {
+export const MovieViewing: React.FC = () => {
     const { movieId } = useParams();
 
     const { isLoading, data: movie } = useQuery(MOVIE_VIEWING_QUERY(movieId), async () =>

@@ -1,28 +1,23 @@
 import type { Account, Entry } from './Account';
-import type { Transaction } from 'objection';
 
 export type CreateAccountData = Omit<
-	Account,
-	'id' | 'createdAt' | 'updatedAt' | 'entries' | 'createEntry' | 'updateBalance'
+    Account,
+    'id' | 'createdAt' | 'updatedAt' | 'entries' | 'createEntry' | 'updateBalance'
 >;
 export type UpdateAccountData = Partial<
-	Omit<Account, 'id' | 'createdAt' | 'updatedAt' | 'entries' | 'createEntry' | 'updateBalance'>
+    Omit<Account, 'id' | 'createdAt' | 'updatedAt' | 'entries' | 'createEntry' | 'updateBalance'>
 >;
 
 // @Repository
 export interface AccountRepository {
-	createAccount(trx: Transaction, accountInput: CreateAccountData): Promise<Account>;
+    createAccount(accountInput: CreateAccountData): Promise<Account>;
 
-	addEntryToAccount(trx: Transaction, entry: Entry): Promise<Entry>;
+    addEntryToAccount(entry: Entry): Promise<Entry>;
 
-	updateAccount(
-		trx: Transaction,
-		accountId: string,
-		accountInput: UpdateAccountData,
-	): Promise<Account>;
+    updateAccount(accountId: string, accountInput: UpdateAccountData): Promise<Account>;
 
-	findAccounts(trx: Transaction): Promise<Account[]>;
+    findAccounts(): Promise<Account[]>;
 
-	getAccountById(trx: Transaction, accountId: string): Promise<Account | undefined>;
-	getAccountByCustomerId(trx: Transaction, customerId: string): Promise<Account | undefined>;
+    getAccountById(accountId: string): Promise<Account | undefined>;
+    getAccountByCustomerId(customerId: string): Promise<Account | undefined>;
 }
