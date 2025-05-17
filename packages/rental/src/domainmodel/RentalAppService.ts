@@ -1,9 +1,9 @@
-import type { TransactionProvider } from '@ddd-video-club-v2/database';
 import type { EventBus } from '@ddd-video-club-v2/event-bus';
 import { MOVIE_RENTED, type MovieRentedEvent } from '@ddd-video-club-v2/event-types';
 import type { Rental } from './Rental';
 import type { CreateRentalData, RentalRepository } from './RentalRepository';
 import type { RentalViewingReadModel } from './RentalReadModelTypes';
+import { TransactionOnRepoProvider } from '@ddd-video-club-v2/database';
 
 export type RentMovieCommand = {
     customerId: string;
@@ -54,18 +54,16 @@ function buildViewingReadModel(rental: Rental | undefined): RentalViewingReadMod
  * Inject the necessary dependencies and return a fully usable application service.
  */
 export function getRentalAppService({
-    repo,
     transact,
     eventBus,
 }: {
-    repo: RentalRepository;
-    transact: TransactionProvider;
+    transact: TransactionOnRepoProvider<RentalRepository>;
     eventBus: EventBus;
 }): RentalAppService {
     return {
         async rentMovie(command) {
-            const rental = await transact(async (trx) =>
-                repo.createRental(trx, buildEntityFromCommand(command)),
+            const rental = await transact(async (repo) =>
+                repo.createRental(buildEntityFromCommand(command)),
             );
 
             const event: MovieRentedEvent = {
@@ -84,8 +82,8 @@ export function getRentalAppService({
         },
 
         async viewRental(rentalId) {
-            return transact(async (trx) =>
-                repo.getRentalById(trx, rentalId).then(buildViewingReadModel),
+            return transact(async (repo) =>
+                repo.getRentalById(rentalId).then(buildViewingReadModel),
             );
         },
     };

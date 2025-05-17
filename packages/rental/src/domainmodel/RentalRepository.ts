@@ -6,7 +6,7 @@ export type UpdateRentalData = Partial<Omit<Rental, 'id' | 'createdAt' | 'update
 
 // @Repository
 export interface RentalRepository {
-	createRental(trx: Transaction, rentalInput: CreateRentalData): Promise<Rental>;
-	findRentals(trx: Transaction): Promise<Rental[]>;
-	getRentalById(trx: Transaction, rentalId: string): Promise<Rental | undefined>;
+    createRental(rentalInput: CreateRentalData): Promise<Rental>;
+    findRentals(): Promise<Rental[]>;
+    getRentalById(rentalId: string): Promise<Rental | undefined>;
 }

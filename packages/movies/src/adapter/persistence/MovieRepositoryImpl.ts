@@ -1,6 +1,7 @@
 import { Model } from 'objection';
 import type { Movie } from '../../domainmodel/Movie';
 import type { MovieRepository } from '../../domainmodel/MovieRepository';
+import { withTransactionFor } from '@ddd-video-club-v2/database';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface MovieModel extends Movie {}
@@ -15,24 +16,24 @@ class MovieModel extends Model {
     }
 }
 
-export const MovieRepositoryImpl: MovieRepository = {
-    async createMovie(trx, movieInput) {
+export const MovieRepositoryImpl = withTransactionFor<MovieRepository>((trx) => ({
+    async createMovie(movieInput) {
         return MovieModel.query(trx).insert(movieInput).returning('*');
     },
 
-    async findMovies(trx) {
+    async findMovies() {
         return MovieModel.query(trx);
     },
 
-    async getMovieById(trx, movieId) {
+    async getMovieById(movieId) {
         return MovieModel.query(trx).findById(movieId);
     },
 
-    async updateMovie(trx, movieId, movieInput) {
+    async updateMovie(movieId, movieInput) {
         return MovieModel.query(trx).updateAndFetchById(movieId, movieInput);
     },
 
-    async deleteMovie(trx, movieId) {
+    async deleteMovie(movieId) {
         return MovieModel.query(trx).deleteById(movieId);
     },
-};
+}));

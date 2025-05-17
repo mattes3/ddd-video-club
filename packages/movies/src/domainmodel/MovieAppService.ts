@@ -1,4 +1,4 @@
-import type { TransactionProvider } from '@ddd-video-club-v2/database';
+import type { TransactionOnRepoProvider } from '@ddd-video-club-v2/database';
 import type { Movie } from './Movie';
 import type { MovieRepository } from './MovieRepository';
 import type { MovieSelectionReadModel, MovieViewingReadModel } from './MovieReadModelTypes';
@@ -35,18 +35,15 @@ export interface MovieAppService {
  * Inject the necessary dependencies and return a fully usable application service.
  */
 export function getMovieAppService(
-    repo: MovieRepository,
-    transact: TransactionProvider,
+    transact: TransactionOnRepoProvider<MovieRepository>,
 ): MovieAppService {
     return {
         async findMoviesToSelectFrom() {
-            return transact(async (trx) => repo.findMovies(trx).then(buildSelectionReadModels));
+            return transact(async (repo) => repo.findMovies().then(buildSelectionReadModels));
         },
 
         async findMovieForViewing(movieId) {
-            return transact(async (trx) =>
-                repo.getMovieById(trx, movieId).then(buildViewingReadModel),
-            );
+            return transact(async (repo) => repo.getMovieById(movieId).then(buildViewingReadModel));
         },
     };
 }

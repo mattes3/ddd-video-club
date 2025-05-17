@@ -7,18 +7,18 @@ import { MovieRepositoryImpl } from './adapter/persistence/MovieRepositoryImpl';
 import { getMovieAppService } from './domainmodel/MovieAppService';
 
 async function server() {
-	try {
-		await initKnexAndObjection();
+    try {
+        await initKnexAndObjection();
 
-		const appService = getMovieAppService(MovieRepositoryImpl, Model.transaction.bind(Model));
-		const port = process.env.PORT ?? 4000;
+        const appService = getMovieAppService(MovieRepositoryImpl);
+        const port = process.env.PORT ?? 4000;
 
-		api(appService).listen(port);
+        api(appService).listen(port);
 
-		return `Movie API Dev server listening on port ${port}`;
-	} catch (error: unknown) {
-		logger.error('Movie API devServer error', error);
-	}
+        return `Movie API Dev server listening on port ${port}`;
+    } catch (error: unknown) {
+        logger.error('Movie API devServer error', error);
+    }
 }
 
 server().then(console.log).catch(console.error);
