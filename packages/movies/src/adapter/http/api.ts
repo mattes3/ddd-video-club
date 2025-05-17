@@ -9,22 +9,22 @@ import type { MovieAppService } from '../../domainmodel/MovieAppService';
 import { router } from './router';
 
 export function api(appService: MovieAppService) {
-	const server = express();
+    const server = express();
 
-	server.use(
-		morgan(
-			'[:date[iso]] ACCESS :method :url  :status  :response-time ms - :res[content-length]',
-		),
-	);
+    server.use(
+        morgan(
+            '[:date[iso]] ACCESS :method :url  :status  :response-time ms - :res[content-length]',
+        ),
+    );
 
-	server.use(compression());
-	server.use(cors());
-	server.use(cookieParser());
+    server.use(compression());
+    server.use(cors());
+    server.use(cookieParser());
 
-	// router must be last so that the above middleware can do its job first
-	server.use('/api/movies', router(appService));
+    // router must be last so that the above middleware can do its job first
+    server.use('/api/movies', router(appService));
 
-	return server;
+    return server;
 }
 
 export default api;
