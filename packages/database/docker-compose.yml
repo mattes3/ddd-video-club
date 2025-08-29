@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   # set up a PostgreSQL database
   db:
@@ -14,4 +12,4 @@ services:
     # Database resides in a subdirectory of local directory "."
     volumes:
       - './postgres_data:/var/lib/postgresql/data'
-    restart: unless-stopped
+    restart: never
