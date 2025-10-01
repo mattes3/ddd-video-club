@@ -12,4 +12,4 @@ services:
     # Database resides in a subdirectory of local directory "."
     volumes:
       - './postgres_data:/var/lib/postgresql/data'
-    restart: never
+    restart: no
