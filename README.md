@@ -15,6 +15,59 @@ It demonstrates how to design such a thing using DDD, and how to implement it in
 on NodeJS, using the principles of the "ports and adapters" architectural style, as described by
 Alistair Cockburn.
 
+## What the Application Does
+
+This is a sample application developed for Matthias Bohlen's Domain-Driven Design (DDD) Advanced Level course (iSAQB Certified). It implements a simplified video rental system where users can:
+
+- Browse and select from available movies
+- Rent movies for a specified number of days
+- Watch rented movies directly in the browser
+- View their account billing information
+
+The application demonstrates DDD principles and the "ports and adapters" (hexagonal) architectural style using TypeScript on Node.js.
+
+Key features include:
+
+- Movie catalog with categories (e.g., Science Fiction, Romance)
+- Rental management with duration tracking
+- Pricing calculations with support for discount campaigns
+- Account billing and overview
+- Event-driven architecture for inter-service communication
+
+## How It's Structured
+
+The project is organized as a monorepo using Yarn workspaces, with packages divided into conceptual modules (business domains) and technological modules (infrastructure):
+
+Conceptual Modules (Business Logic)
+
+- Movies: Manages movie catalog and metadata
+- Rental: Handles movie rental transactions and publishes domain events
+- Pricing: Calculates rental prices and applies discount campaigns
+- Accounting: Tracks customer accounts and billing
+
+Technological Modules (Infrastructure)
+
+- Database: PostgreSQL with Knex migrations and Objection.js ORM
+- Event Bus: RabbitMQ for asynchronous inter-service communication
+- Reverse Proxy: Caddy server for API routing
+- Frontend: React application with Tailwind CSS
+
+Architecture Pattern
+
+Each conceptual module follows DDD layered architecture with ports and adapters:
+
+- Domain Model: Pure TypeScript types/entities (e.g., Movie, Rental)
+- Application Service: Business logic orchestration (e.g., MovieAppService, RentalAppService)
+- Repository Interface: Data access abstraction
+
+Adapters:
+
+- HTTP: Express.js REST APIs
+- Persistence: Database implementations using Objection.js
+
+Services communicate via domain events published to the event bus (e.g., MOVIE_RENTED event triggers pricing and accounting updates).
+
+
 ## Packages in the `packages` directory
 
 The app consists of the following conceptual modules:
