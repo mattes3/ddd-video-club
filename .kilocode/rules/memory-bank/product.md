@@ -23,7 +23,7 @@ The application operates as a monorepo with distinct bounded contexts (Movies, R
 
 5. **Viewing and Account Management**: Users can watch rented movies (YouTube embeds) or view account overviews showing entries and balance. All interactions route through the Caddy reverse proxy to the appropriate microservices.
 
-The system uses Objection.js for ORM, Knex for migrations, and Yarn workspaces for build management. Events ensure eventual consistency without direct service calls.
+The system uses Objection.js for ORM, Knex for migrations, and pnpm workspaces for build management. Events ensure eventual consistency without direct service calls.
 
 ## User Experience Goals
 - **Simplicity and Intuitiveness**: A clean, responsive UI with Tailwind CSS allows quick movie selection, rental, and account checks. No complex forms or authentication (uses dummy customer ID for demo).

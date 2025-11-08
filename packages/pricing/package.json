@@ -4,7 +4,7 @@
   "author": "Matthias Bohlen",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development yarn node dist/src/main.js",
+    "dev": "NODE_ENV=development node dist/src/main.js",
     "build": "rimraf ./dist && tsc",
     "test": "vitest"
   },

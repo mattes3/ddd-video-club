@@ -4,7 +4,7 @@
   "author": "Matthias Bohlen",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development PORT=4000 yarn node dist/src/main.js",
+    "dev": "NODE_ENV=development PORT=4000 node dist/src/main.js",
     "build": "rimraf ./dist && tsc"
   },
   "devDependencies": {

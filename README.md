@@ -36,7 +36,7 @@ Key features include:
 
 ## How It's Structured
 
-The project is organized as a monorepo using Yarn workspaces, with packages divided into conceptual modules (business domains) and technological modules (infrastructure):
+The project is organized as a monorepo using pnpm workspaces, with packages divided into conceptual modules (business domains) and technological modules (infrastructure):
 
 Conceptual Modules (Business Logic)
 
@@ -93,8 +93,8 @@ Install Node. Then go to the root folder of this project here and type
 
 ```
 corepack enable
-yarn
-yarn build
+pnpm install
+pnpm build
 ```
 
 You should see an output like this:
@@ -130,7 +130,7 @@ Done in 23s 8ms
 cd packages/database
 docker-compose up -d
 sleep 30
-yarn knex migrate:latest
+pnpm knex migrate:latest
 ```
 
 ### Start the event bus
@@ -146,28 +146,28 @@ docker-compose up -d
 
 ```
 cd packages/movies
-yarn dev
+pnpm dev
 ```
 
 2) Open a new terminal and type this:
 
 ```
 cd packages/rental
-yarn dev
+pnpm dev
 ```
 
 3) Open a new terminal and type this:
 
 ```
 cd packages/pricing
-yarn dev
+pnpm dev
 ```
 
 4) Open a new terminal and type this:
 
 ```
 cd packages/accounting
-yarn dev
+pnpm dev
 ```
 
 ### Start the reverse proxy
@@ -189,7 +189,7 @@ Start a new terminal and type this:
 
 ```
 cd packages/frontend
-yarn dev
+pnpm dev
 ```
 
 See the frontend open on http://localhost:3000/
@@ -247,7 +247,7 @@ Run it like this:
 
 ```
 cd packages/pricing
-yarn test
+pnpm test
 ```
 
 Terminate the test with the `q` key on your keyboard.

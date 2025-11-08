@@ -27,12 +27,12 @@ windows:
           - printf '\033]2;%s\033\\' 'rental'
           - sleep 30
           - cd packages/rental
-          - yarn dev
+          - pnpm dev
         - movies:
           - printf '\033]2;%s\033\\' 'movies'
           - sleep 30
           - cd packages/movies
-          - yarn dev
+          - pnpm dev
   - services2:
       layout: even-vertical
       panes:
@@ -40,12 +40,12 @@ windows:
           - printf '\033]2;%s\033\\' 'pricing'
           - sleep 30
           - cd packages/pricing
-          - yarn dev
+          - pnpm dev
         - accounting:
           - printf '\033]2;%s\033\\' 'accounting'
           - sleep 30
           - cd packages/accounting
-          - yarn dev
+          - pnpm dev
   - infrastructure:
       layout: even-vertical
       panes:
@@ -54,7 +54,7 @@ windows:
             - cd packages/database
             - docker compose up -d
             - sleep 25
-            - yarn knex migrate:latest
+            - pnpm knex migrate:latest
         - eventbus:
             - printf '\033]2;%s\033\\' 'eventbus'
             - cd packages/event-bus
@@ -70,5 +70,5 @@ windows:
             - printf '\033]2;%s\033\\' 'frontend'
             - sleep 35
             - cd packages/frontend
-            - yarn dev
+            - pnpm dev
             - clear

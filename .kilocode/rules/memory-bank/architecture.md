@@ -1,7 +1,7 @@
 # Architecture: DDD Video Club v2
 
 ## System Architecture
-The application follows a hexagonal (ports and adapters) architecture combined with Domain-Driven Design (DDD) principles. It is structured as a monorepo using Yarn workspaces, separating business domains (bounded contexts) from infrastructure concerns. Each bounded context (Movies, Rental, Pricing, Accounting) is implemented as an independent package with its own domain model, application services, and adapters for HTTP and persistence.
+The application follows a hexagonal (ports and adapters) architecture combined with Domain-Driven Design (DDD) principles. It is structured as a monorepo using pnpm workspaces, separating business domains (bounded contexts) from infrastructure concerns. Each bounded context (Movies, Rental, Pricing, Accounting) is implemented as an independent package with its own domain model, application services, and adapters for HTTP and persistence.
 
 Key architectural decisions:
 - **Bounded Contexts**: Each domain (e.g., Movies for catalog management, Rental for transactions) is isolated to enforce single responsibility and reduce coupling.

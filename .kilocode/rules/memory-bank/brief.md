@@ -3,7 +3,7 @@
 ## Overview
 This project is a sample application developed for Matthias Bohlen's Domain-Driven Design (DDD) Advanced Level course (iSAQB Certified). It implements a simplified video rental system, often referred to as a "poor man's Netflix." The application allows users to browse and select movies, rent them for a specified number of days, watch rented movies in the browser, and view account billing information.
 
-The primary goal is to demonstrate DDD principles, including bounded contexts, aggregates, entities, value objects, repositories, application services, and domain events, alongside the "ports and adapters" (hexagonal) architectural style as described by Alistair Cockburn. The implementation uses TypeScript on Node.js, organized as a monorepo with Yarn workspaces.
+The primary goal is to demonstrate DDD principles, including bounded contexts, aggregates, entities, value objects, repositories, application services, and domain events, alongside the "ports and adapters" (hexagonal) architectural style as described by Alistair Cockburn. The implementation uses TypeScript on Node.js, organized as a monorepo with pnpm workspaces.
 
 ## Core Requirements
 - **User Journey**:
