@@ -29,7 +29,7 @@ The primary goal is to demonstrate DDD principles, including bounded contexts, a
 - **Out of Scope**: User authentication/registration (uses dummy customer ID), advanced search/filtering, payment processing, multi-user concurrency, production scaling, real video hosting (uses YouTube embeds).
 
 ## Success Criteria
-- Application runs locally with all services (database, event bus, microservices, frontend) starting via tmuxinator or manual commands.
+- Application runs locally with all services (database, event bus, microservices, frontend) starting via single root docker-compose.yml or tmuxinator/manual commands.
 - End-to-end flow: Rent a movie, verify pricing (with/without discount), check account balance.
 - Tests pass, including integration tests in pricing module.
 - Code adheres to DDD patterns, with pure domain models and infrastructure adapters.

@@ -6,21 +6,19 @@ http://localhost:5001 {
 
     encode gzip
 
-    @static file
-
-    handle @static {
-        file_server
-    }
-
     handle /api/movies* {
-        reverse_proxy localhost:4000
+        reverse_proxy movies:4000
     }
 
     handle /api/rentals* {
-        reverse_proxy localhost:4001
+        reverse_proxy rental:4001
     }
 
     handle /api/accounts* {
-        reverse_proxy localhost:4002
+        reverse_proxy accounting:4002
+    }
+
+    handle {
+        reverse_proxy frontend:80
     }
 }

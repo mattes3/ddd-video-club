@@ -5,11 +5,11 @@ export async function initKnexAndObjection() {
     const knex = Knex({
         client: 'postgresql',
         connection: {
-            database: 'videoclubdb',
-            host: process.env['DATABASE_HOSTNAME'] ?? 'localhost',
-            port: 5432,
-            user: 'videoclub',
-            password: 'videoclubpassword',
+            database: process.env.DATABASE_NAME || 'videoclubdb',
+            host: process.env.DATABASE_HOST || 'localhost',
+            port: parseInt(process.env.DATABASE_PORT || '5432'),
+            user: process.env.DATABASE_USER || 'videoclub',
+            password: process.env.DATABASE_PASSWORD || 'videoclubpassword',
             ssl: false,
         },
         pool: {

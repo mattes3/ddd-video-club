@@ -7,7 +7,10 @@ export async function connectToEventBus(): Promise<EventBus> {
         ({ serializeError }) => serializeError,
     );
 
-    const conn = await amqp.connect('amqp://guest:guest@localhost:5672/');
+    const rabbitUrl = `amqp://${process.env.RABBITMQ_USER || 'guest'}:${
+        process.env.RABBITMQ_PASSWORD || 'guest'
+    }@${process.env.RABBITMQ_HOST || 'localhost'}:${process.env.RABBITMQ_PORT || 5672}/`;
+    const conn = await amqp.connect(rabbitUrl);
 
     return {
         async sendEvent(eventTypeName, payload) {

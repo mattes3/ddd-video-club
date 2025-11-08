@@ -1,6 +1,6 @@
 # Database
-postgres_data
-*.sublime-workspace
+postgres_data/
+caddy_logs/
 
 # Logs
 logs

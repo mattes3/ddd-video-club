@@ -89,7 +89,7 @@ Finally, there is a frontend using React and Tailwind.
 
 ## How to build
 
-Install Node. Then go to the root folder of this project here and type
+Install Node. Then go to the root folder of this project and type
 
 ```
 corepack enable
@@ -97,34 +97,39 @@ pnpm install
 pnpm build
 ```
 
-You should see an output like this:
-
-```
-[@ddd-video-club-v2/database]: Process started
-[@ddd-video-club-v2/event-bus]: Process started
-[@ddd-video-club-v2/event-bus]: Process exited (exit code 0), completed in 2s 910ms
-[@ddd-video-club-v2/event-types]: Process started
-[@ddd-video-club-v2/database]: Process exited (exit code 0), completed in 3s 503ms
-[@ddd-video-club-v2/frontend]: Process started
-[@ddd-video-club-v2/event-types]: Process exited (exit code 0), completed in 2s 301ms
-[@ddd-video-club-v2/frontend]: Creating an optimized production build...
-[@ddd-video-club-v2/frontend]: Compiled successfully.
-[@ddd-video-club-v2/frontend]: ...
-[@ddd-video-club-v2/frontend]: Process exited (exit code 0), completed in 12s 316ms
-[@ddd-video-club-v2/accounting]: Process started
-[@ddd-video-club-v2/movies]: Process started
-[@ddd-video-club-v2/movies]: Process exited (exit code 0), completed in 3s 521ms
-[@ddd-video-club-v2/pricing]: Process started
-[@ddd-video-club-v2/accounting]: Process exited (exit code 0), completed in 3s 850ms
-[@ddd-video-club-v2/rental]: Process started
-[@ddd-video-club-v2/pricing]: Process exited (exit code 0), completed in 3s 173ms
-[@ddd-video-club-v2/rental]: Process exited (exit code 0), completed in 3s 331ms
-Done in 23s 8ms
-```
+This compiles all TypeScript packages and builds the frontend static assets.
 
 ## How to run
 
-### Start the database and initialize the schema
+### Using Docker (Recommended for full stack)
+
+The project now uses a single docker-compose.yml at the root to orchestrate the entire stack, including PostgreSQL, RabbitMQ, the four backend services (movies, rental, pricing, accounting), the static frontend (nginx), and Caddy reverse proxy.
+
+1. Ensure Docker is running.
+
+2. Start the full stack:
+   ```
+   docker compose up -d
+   ```
+3. Run migrations (only on initial setup):
+   ```
+   docker compose exec movies pnpm knex migrate:latest
+   ```
+   inside the movies service container after full start.
+
+4. Access the application at http://localhost:5001.
+
+5. View logs: `docker compose logs -f [service]`
+
+6. Stop: `docker compose down`
+
+The Dockerfile in `deployment` provides multi-stage builds for backend services and frontend (target 'frontend' for nginx static serve).
+
+### Local Development (Without Docker)
+
+For local development without Docker:
+
+#### Start the database and initialize the schema
 
 ```
 cd packages/database
@@ -133,121 +138,53 @@ sleep 30
 pnpm knex migrate:latest
 ```
 
-### Start the event bus
+#### Start the event bus
 
 ```
 cd packages/event-bus
 docker-compose up -d
 ```
 
-### Start the API servers
+#### Start the API servers
 
-1) Open a new terminal and type this:
+1. `cd packages/movies && pnpm dev` (port 4000)
 
-```
-cd packages/movies
-pnpm dev
-```
+2. `cd packages/rental && pnpm dev` (port 4001)
 
-2) Open a new terminal and type this:
+3. `cd packages/pricing && pnpm dev` (no HTTP port)
 
-```
-cd packages/rental
-pnpm dev
-```
+4. `cd packages/accounting && pnpm dev` (port 4002)
 
-3) Open a new terminal and type this:
+#### Start the reverse proxy
 
-```
-cd packages/pricing
-pnpm dev
-```
-
-4) Open a new terminal and type this:
-
-```
-cd packages/accounting
-pnpm dev
-```
-
-### Start the reverse proxy
-
-Install [Caddy server](https://caddyserver.com/) on your local machine.
-
-On a Mac, using Homebrew, it works with `brew install caddy`.
-
-Then start a new terminal and type this:
+Install Caddy: `brew install caddy` (macOS).
 
 ```
 cd packages/reverse-proxy
 caddy run
 ```
 
-### Start the frontend
+(port 5001)
 
-Start a new terminal and type this:
+#### Start the frontend
 
 ```
 cd packages/frontend
 pnpm dev
 ```
 
-See the frontend open on http://localhost:3000/
+(http://localhost:3000, proxies to 5001)
 
-Choose one of the three movies, rent it for 5 days and click on "Your account"
-to see how much you will have to pay this month. If you find this too expensive,
-insert a row into the discount_campaigns table:
+### Demo Usage
 
-```SQL
-INSERT INTO dddvc.discount_campaigns
-(campaign_title, starting_from, valid_thru, movie_category_name, percentage)
-VALUES (
-	'SF discount',
-	now(),
-	now() + interval '7 days',
-	'Science Fiction',
-	20
-);
-```
+Browse movies at http://localhost:5001, rent one (e.g., Matrix for 5 days), view account at /account. To test discounts, insert into discount_campaigns table via psql.
 
-This will introduce a 20% discount on Science Fiction movies for the next 7 days.
-
-Try to rent the Matrix movie once more and inspect your account again.
-
-## Automate the start of the 4 microservices and the 3 infrastructure processes
-
-There is a configuration file for tmuxinator in this directory. It is
-called `.tmuxinator.yml`. (Thanks to @AlexZeitler who generously provided
-this file.)
-
-It starts all necessary processes in the right
-order. First, the database, the event bus, and the reverse proxy come up.
-Then, the 4 microservices start. At last, the frontend starts and begins
-to use the 4 microservices via the reverse proxy.
-
-Start tmuxinator with the following command:
-
-```
-tmuxinator start
-```
-
-More info:
-
-- https://github.com/tmuxinator/tmuxinator
-- https://man7.org/linux/man-pages/man1/tmux.1.html
-
-## Run the integration test in Pricing
-
-The Pricing module has an integration test at the application
-service level, with mock objects to substitute the event bus and
-the database during the test. The purpose is to show how the ports-and-adapters
-style keeps such applications testable.
-
-Run it like this:
+## Run Integration Test in Pricing
 
 ```
 cd packages/pricing
 pnpm test
 ```
 
-Terminate the test with the `q` key on your keyboard.
+(q to quit)
+

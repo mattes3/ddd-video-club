@@ -1,0 +1,119 @@
+services:
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: videoclub
+      POSTGRES_PASSWORD: videoclubpassword
+      POSTGRES_DB: videoclubdb
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    restart: no
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U videoclub -d videoclubdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    restart: no
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  movies:
+    image: mattes3/ddd-video-club-movies
+    environment:
+      NODE_ENV: development
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: videoclubdb
+      DATABASE_USER: videoclub
+      DATABASE_PASSWORD: videoclubpassword
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: no
+
+  rental:
+    image: mattes3/ddd-video-club-rental
+    environment:
+      NODE_ENV: development
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: videoclubdb
+      DATABASE_USER: videoclub
+      DATABASE_PASSWORD: videoclubpassword
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: no
+
+  pricing:
+    image: mattes3/ddd-video-club-pricing
+    environment:
+      NODE_ENV: development
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: videoclubdb
+      DATABASE_USER: videoclub
+      DATABASE_PASSWORD: videoclubpassword
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: no
+
+  accounting:
+    image: mattes3/ddd-video-club-accounting
+    environment:
+      NODE_ENV: development
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: videoclubdb
+      DATABASE_USER: videoclub
+      DATABASE_PASSWORD: videoclubpassword
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    restart: no
+
+  frontend:
+    image: mattes3/ddd-video-club-frontend
+    restart: no
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - '5001:5001'
+    volumes:
+      - ../packages/reverse-proxy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy_logs:/data
+    depends_on:
+      - movies
+      - rental
+      - accounting
+      - frontend
+    restart: no

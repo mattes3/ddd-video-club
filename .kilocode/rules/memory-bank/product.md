@@ -11,9 +11,9 @@ The DDD Video Club v2 is an educational sample application designed to illustrat
 - **Testability in Layered Architectures**: By using ports and adapters, the project shows how to mock infrastructure (e.g., databases, event buses) for integration testing without affecting domain logic.
 
 ## How It Should Work
-The application operates as a monorepo with distinct bounded contexts (Movies, Rental, Pricing, Accounting) and infrastructure modules (Database, Event Bus, Reverse Proxy, Frontend).
+The application operates as a monorepo with distinct bounded contexts (Movies, Rental, Pricing, Accounting) and infrastructure modules (Database, Event Bus, Reverse Proxy, Frontend), orchestrated via a single root docker-compose.yml for Docker deployment.
 
-1. **Movie Browsing and Selection**: Users view a catalog of movies (pre-populated with demo data: Matrix, Notting Hill, Bourne Identity) via the React frontend. Movies are fetched from the Movies service's REST API, which queries the PostgreSQL database through a repository adapter.
+1. **Movie Browsing and Selection**: Users view a catalog of movies (pre-populated with demo data: Matrix, Notting Hill, Bourne Identity) via the static React frontend served by nginx behind Caddy. Movies are fetched from the Movies service's REST API (/api/movies), which queries the PostgreSQL database through a repository adapter.
    
 2. **Renting a Movie**: Selecting "Rent now" opens a dialog to choose rental duration. The Rental service creates a Rental entity, persists it, and publishes a `MOVIE_RENTED` event to the RabbitMQ event bus.
 
@@ -21,9 +21,9 @@ The application operates as a monorepo with distinct bounded contexts (Movies, R
 
 4. **Accounting Update**: The Accounting service consumes `MOVIE_RENTAL_PRICED` events, adds a debit entry to the customer's Account aggregate, updates the balance, and persists changes.
 
-5. **Viewing and Account Management**: Users can watch rented movies (YouTube embeds) or view account overviews showing entries and balance. All interactions route through the Caddy reverse proxy to the appropriate microservices.
+5. **Viewing and Account Management**: Users can watch rented movies (YouTube embeds) or view account overviews showing entries and balance (/api/accounts/myaccount). All interactions route through the Caddy reverse proxy to the appropriate microservices.
 
-The system uses Objection.js for ORM, Knex for migrations, and pnpm workspaces for build management. Events ensure eventual consistency without direct service calls.
+The system uses Objection.js for ORM, Knex for migrations, pnpm workspaces for build management, and a multi-stage Dockerfile for containerization (backend services and frontend static build). Events ensure eventual consistency without direct service calls.
 
 ## User Experience Goals
 - **Simplicity and Intuitiveness**: A clean, responsive UI with Tailwind CSS allows quick movie selection, rental, and account checks. No complex forms or authentication (uses dummy customer ID for demo).

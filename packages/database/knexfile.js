@@ -3,18 +3,18 @@
  */
 module.exports = {
     development: {
-        client: "postgresql",
+        client: 'postgresql',
         connection: {
-            database: "videoclubdb",
-            host: "localhost",
-            port: 5432,
-            user: "videoclub",
-            password: "videoclubpassword",
+            database: process.env.DATABASE_NAME || 'videoclubdb',
+            host: process.env.DATABASE_HOST || 'localhost',
+            port: parseInt(process.env.DATABASE_PORT || '5432'),
+            user: process.env.DATABASE_USER || 'videoclub',
+            password: process.env.DATABASE_PASSWORD || 'videoclubpassword',
             ssl: false,
         },
         migrations: {
-            directory: "knex/migrations",
-            tableName: "knex_migrations",
+            directory: 'knex/migrations',
+            tableName: 'knex_migrations',
         },
     },
 };
