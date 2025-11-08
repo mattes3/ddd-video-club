@@ -3,6 +3,7 @@ lockfileVersion: '9.0'
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
+  injectWorkspacePackages: true
 
 importers:
 
@@ -31,7 +32,7 @@ importers:
     dependencies:
       '@ddd-video-club-v2/database':
         specifier: workspace:^
-        version: link:../database
+        version: file:packages/database
       '@ddd-video-club-v2/event-bus':
         specifier: workspace:^
         version: link:../event-bus
@@ -64,7 +65,7 @@ importers:
         version: 3.0.4
       objection:
         specifier: ^3.1.2
-        version: 3.1.5(knex@3.1.0)
+        version: 3.1.5(knex@3.1.0(pg@8.16.3))
       serialize-error:
         specifier: ^11.0.2
         version: 11.0.3
@@ -104,7 +105,7 @@ importers:
         version: 3.1.0(pg@8.16.3)
       objection:
         specifier: ^3.1.2
-        version: 3.1.5(knex@3.1.0)
+        version: 3.1.5(knex@3.1.0(pg@8.16.3))
       pg:
         specifier: ^8.11.3
         version: 8.16.3
@@ -239,7 +240,7 @@ importers:
     dependencies:
       '@ddd-video-club-v2/database':
         specifier: workspace:^
-        version: link:../database
+        version: file:packages/database
       compression:
         specifier: ^1.7.4
         version: 1.8.1
@@ -266,7 +267,7 @@ importers:
         version: 3.0.4
       objection:
         specifier: ^3.1.2
-        version: 3.1.5(knex@3.1.0)
+        version: 3.1.5(knex@3.1.0(pg@8.16.3))
       serialize-error:
         specifier: ^11.0.2
         version: 11.0.3
@@ -303,7 +304,7 @@ importers:
     dependencies:
       '@ddd-video-club-v2/database':
         specifier: workspace:^
-        version: link:../database
+        version: file:packages/database
       '@ddd-video-club-v2/event-bus':
         specifier: workspace:^
         version: link:../event-bus
@@ -336,7 +337,7 @@ importers:
         version: 3.0.4
       objection:
         specifier: ^3.1.2
-        version: 3.1.5(knex@3.1.0)
+        version: 3.1.5(knex@3.1.0(pg@8.16.3))
       serialize-error:
         specifier: ^11.0.2
         version: 11.0.3
@@ -379,10 +380,13 @@ importers:
     dependencies:
       '@ddd-video-club-v2/database':
         specifier: workspace:^
-        version: link:../database
+        version: file:packages/database
       '@ddd-video-club-v2/event-bus':
         specifier: workspace:^
         version: link:../event-bus
+      '@ddd-video-club-v2/event-types':
+        specifier: workspace:^
+        version: link:../event-types
       compression:
         specifier: ^1.7.4
         version: 1.8.1
@@ -409,7 +413,7 @@ importers:
         version: 3.0.4
       objection:
         specifier: ^3.1.2
-        version: 3.1.5(knex@3.1.0)
+        version: 3.1.5(knex@3.1.0(pg@8.16.3))
       serialize-error:
         specifier: ^11.0.2
         version: 11.0.3
@@ -1259,6 +1263,9 @@ packages:
     engines: {node: ^14 || ^16 || >=18}
     peerDependencies:
       postcss-selector-parser: ^6.0.10
+
+  '@ddd-video-club-v2/database@file:packages/database':
+    resolution: {directory: packages/database, type: directory}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -7917,6 +7924,20 @@ snapshots:
     dependencies:
       postcss-selector-parser: 6.1.2
 
+  '@ddd-video-club-v2/database@file:packages/database':
+    dependencies:
+      knex: 3.1.0(pg@8.16.3)
+      objection: 3.1.5(knex@3.1.0(pg@8.16.3))
+      pg: 8.16.3
+    transitivePeerDependencies:
+      - better-sqlite3
+      - mysql
+      - mysql2
+      - pg-native
+      - sqlite3
+      - supports-color
+      - tedious
+
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
 
@@ -12219,7 +12240,7 @@ snapshots:
       define-properties: 1.2.1
       es-object-atoms: 1.1.1
 
-  objection@3.1.5(knex@3.1.0):
+  objection@3.1.5(knex@3.1.0(pg@8.16.3)):
     dependencies:
       ajv: 8.17.1
       ajv-formats: 2.1.1(ajv@8.17.1)

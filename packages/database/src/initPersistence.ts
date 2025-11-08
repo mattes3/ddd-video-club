@@ -6,7 +6,7 @@ export async function initKnexAndObjection() {
         client: 'postgresql',
         connection: {
             database: 'videoclubdb',
-            host: 'localhost',
+            host: process.env['DATABASE_HOSTNAME'] ?? 'localhost',
             port: 5432,
             user: 'videoclub',
             password: 'videoclubpassword',
