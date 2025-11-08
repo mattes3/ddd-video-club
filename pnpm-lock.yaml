@@ -32,7 +32,7 @@ importers:
     dependencies:
       '@ddd-video-club-v2/database':
         specifier: workspace:^
-        version: file:packages/database
+        version: link:../database
       '@ddd-video-club-v2/event-bus':
         specifier: workspace:^
         version: link:../event-bus
@@ -55,7 +55,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
       knex:
-        specifier: ^3.0.1
+        specifier: ^3.1.0
         version: 3.1.0(pg@8.16.3)
       morgan:
         specifier: ^1.10.0
@@ -64,8 +64,11 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4
       objection:
-        specifier: ^3.1.2
+        specifier: ^3.1.5
         version: 3.1.5(knex@3.1.0(pg@8.16.3))
+      pg:
+        specifier: ^8.16.3
+        version: 8.16.3
       serialize-error:
         specifier: ^11.0.2
         version: 11.0.3
@@ -101,13 +104,13 @@ importers:
   packages/database:
     dependencies:
       knex:
-        specifier: ^3.0.1
+        specifier: ^3.1.0
         version: 3.1.0(pg@8.16.3)
       objection:
-        specifier: ^3.1.2
+        specifier: ^3.1.5
         version: 3.1.5(knex@3.1.0(pg@8.16.3))
       pg:
-        specifier: ^8.11.3
+        specifier: ^8.16.3
         version: 8.16.3
     devDependencies:
       '@types/pg':
@@ -226,6 +229,15 @@ importers:
       autoprefixer:
         specifier: ^10.4.7
         version: 10.4.21(postcss@8.5.6)
+      knex:
+        specifier: ^3.1.0
+        version: 3.1.0(pg@8.16.3)
+      objection:
+        specifier: ^3.1.5
+        version: 3.1.5(knex@3.1.0(pg@8.16.3))
+      pg:
+        specifier: ^8.16.3
+        version: 8.16.3
       postcss:
         specifier: ^8.4.14
         version: 8.5.6
@@ -240,7 +252,7 @@ importers:
     dependencies:
       '@ddd-video-club-v2/database':
         specifier: workspace:^
-        version: file:packages/database
+        version: link:../database
       compression:
         specifier: ^1.7.4
         version: 1.8.1
@@ -257,7 +269,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
       knex:
-        specifier: ^3.0.1
+        specifier: ^3.1.0
         version: 3.1.0(pg@8.16.3)
       morgan:
         specifier: ^1.10.0
@@ -266,8 +278,11 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4
       objection:
-        specifier: ^3.1.2
+        specifier: ^3.1.5
         version: 3.1.5(knex@3.1.0(pg@8.16.3))
+      pg:
+        specifier: ^8.16.3
+        version: 8.16.3
       serialize-error:
         specifier: ^11.0.2
         version: 11.0.3
@@ -304,7 +319,7 @@ importers:
     dependencies:
       '@ddd-video-club-v2/database':
         specifier: workspace:^
-        version: file:packages/database
+        version: link:../database
       '@ddd-video-club-v2/event-bus':
         specifier: workspace:^
         version: link:../event-bus
@@ -327,7 +342,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
       knex:
-        specifier: ^3.0.1
+        specifier: ^3.1.0
         version: 3.1.0(pg@8.16.3)
       morgan:
         specifier: ^1.10.0
@@ -336,8 +351,11 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4
       objection:
-        specifier: ^3.1.2
+        specifier: ^3.1.5
         version: 3.1.5(knex@3.1.0(pg@8.16.3))
+      pg:
+        specifier: ^8.16.3
+        version: 8.16.3
       serialize-error:
         specifier: ^11.0.2
         version: 11.0.3
@@ -380,7 +398,7 @@ importers:
     dependencies:
       '@ddd-video-club-v2/database':
         specifier: workspace:^
-        version: file:packages/database
+        version: link:../database
       '@ddd-video-club-v2/event-bus':
         specifier: workspace:^
         version: link:../event-bus
@@ -403,7 +421,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0
       knex:
-        specifier: ^3.0.1
+        specifier: ^3.1.0
         version: 3.1.0(pg@8.16.3)
       morgan:
         specifier: ^1.10.0
@@ -412,8 +430,11 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4
       objection:
-        specifier: ^3.1.2
+        specifier: ^3.1.5
         version: 3.1.5(knex@3.1.0(pg@8.16.3))
+      pg:
+        specifier: ^8.16.3
+        version: 8.16.3
       serialize-error:
         specifier: ^11.0.2
         version: 11.0.3
@@ -1263,9 +1284,6 @@ packages:
     engines: {node: ^14 || ^16 || >=18}
     peerDependencies:
       postcss-selector-parser: ^6.0.10
-
-  '@ddd-video-club-v2/database@file:packages/database':
-    resolution: {directory: packages/database, type: directory}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -7923,20 +7941,6 @@ snapshots:
   '@csstools/selector-specificity@2.2.0(postcss-selector-parser@6.1.2)':
     dependencies:
       postcss-selector-parser: 6.1.2
-
-  '@ddd-video-club-v2/database@file:packages/database':
-    dependencies:
-      knex: 3.1.0(pg@8.16.3)
-      objection: 3.1.5(knex@3.1.0(pg@8.16.3))
-      pg: 8.16.3
-    transitivePeerDependencies:
-      - better-sqlite3
-      - mysql
-      - mysql2
-      - pg-native
-      - sqlite3
-      - supports-color
-      - tedious
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true

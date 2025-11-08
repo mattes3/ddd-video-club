@@ -24,10 +24,11 @@
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "express-wolox-logger": "^2.1.0",
-    "knex": "^3.0.1",
+    "knex": "^3.1.0",
     "morgan": "^1.10.0",
     "nocache": "^3.0.4",
-    "objection": "^3.1.2",
+    "objection": "^3.1.5",
+    "pg": "^8.16.3",
     "serialize-error": "^11.0.2",
     "uuid": "^9.0.0"
   },
