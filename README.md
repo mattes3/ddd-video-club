@@ -103,27 +103,32 @@ This compiles all TypeScript packages and builds the frontend static assets.
 
 ### Using Docker (Recommended for full stack)
 
-The project now uses a single docker-compose.yml at the root to orchestrate the entire stack, including PostgreSQL, RabbitMQ, the four backend services (movies, rental, pricing, accounting), the static frontend (nginx), and Caddy reverse proxy.
+The Dockerfile in `deployment` provides multi-stage builds for backend services and frontend (target 'frontend' for nginx static serve).
 
-1. Ensure Docker is running.
+To build all Docker images of this example in one go, use the `dockerize.sh` script:
 
-2. Start the full stack:
+```
+cd deployment
+./dockerize.sh
+```
+
+The project uses a single `docker-compose.yml` to orchestrate the entire stack, including PostgreSQL, RabbitMQ, the four backend services (movies, rental, pricing, accounting), the static frontend (nginx), and Caddy reverse proxy.
+
+1. Start the full stack:
    ```
    docker compose up -d
    ```
-3. Run migrations (only on initial setup):
+2. Run migrations (only on initial setup):
    ```
    docker compose exec movies pnpm knex migrate:latest
    ```
    inside the movies service container after full start.
 
-4. Access the application at http://localhost:5001.
+3. Access the application at http://localhost:5001.
 
-5. View logs: `docker compose logs -f [service]`
+4. View logs: `docker compose logs -f [service]`
 
-6. Stop: `docker compose down`
-
-The Dockerfile in `deployment` provides multi-stage builds for backend services and frontend (target 'frontend' for nginx static serve).
+5. Stop: `docker compose down`
 
 ### Local Development (Without Docker)
 
