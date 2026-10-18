@@ -295,6 +295,12 @@ main {
     margin-top: 0.5rem;
 }
 
+.poster img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+}
+
 .poster-description {
     position: absolute;
     bottom: 0;
