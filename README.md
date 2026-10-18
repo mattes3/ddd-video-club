@@ -36,7 +36,7 @@ Key features include:
 
 ## How It's Structured
 
-The project is organized as a monorepo using pnpm workspaces, with packages divided into conceptual modules (business domains) and technological modules (infrastructure):
+The project is organized as a monorepo using bun workspaces, with packages divided into conceptual modules (business domains) and technological modules (infrastructure):
 
 Conceptual Modules (Business Logic)
 
@@ -89,12 +89,11 @@ Finally, there is a frontend using React and Tailwind.
 
 ## How to build
 
-Install Node. Then go to the root folder of this project and type
+Install Node and [bun](https://bun.sh). Then go to the root folder of this project and type
 
 ```
-corepack enable
-pnpm install
-pnpm build
+bun install
+bun run build
 ```
 
 This compiles all TypeScript packages and builds the frontend static assets.
@@ -120,7 +119,7 @@ The project uses a single `docker-compose.yml` to orchestrate the entire stack, 
    ```
 2. Run migrations (only on initial setup):
    ```
-   docker compose exec movies pnpm knex migrate:latest
+   docker compose exec movies bunx knex migrate:latest
    ```
    inside the movies service container after full start.
 
@@ -140,7 +139,7 @@ For local development without Docker:
 cd packages/database
 docker-compose up -d
 sleep 30
-pnpm knex migrate:latest
+bunx knex migrate:latest
 ```
 
 #### Start the event bus
@@ -152,13 +151,13 @@ docker-compose up -d
 
 #### Start the API servers
 
-1. `cd packages/movies && pnpm dev` (port 4000)
+1. `cd packages/movies && bun run dev` (port 4000)
 
-2. `cd packages/rental && pnpm dev` (port 4001)
+2. `cd packages/rental && bun run dev` (port 4001)
 
-3. `cd packages/pricing && pnpm dev` (no HTTP port)
+3. `cd packages/pricing && bun run dev` (no HTTP port)
 
-4. `cd packages/accounting && pnpm dev` (port 4002)
+4. `cd packages/accounting && bun run dev` (port 4002)
 
 #### Start the reverse proxy
 
@@ -175,7 +174,7 @@ caddy run
 
 ```
 cd packages/frontend
-pnpm dev
+bun run dev
 ```
 
 (http://localhost:3000, proxies to 5001)
@@ -188,7 +187,7 @@ Browse movies at http://localhost:5001, rent one (e.g., Matrix for 5 days), view
 
 ```
 cd packages/pricing
-pnpm test
+bun run test
 ```
 
 (q to quit)
