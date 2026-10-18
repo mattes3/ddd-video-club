@@ -1,7 +1,6 @@
 import { type TransactionOnRepoProvider } from '@ddd-video-club-v2/database';
 import type { EventBus } from '@ddd-video-club-v2/event-bus';
 import { MOVIE_RENTAL_PRICED, type MovieRentalPricedEvent } from '@ddd-video-club-v2/event-types';
-import type { Transaction } from 'objection';
 
 import type { Account } from './Account';
 import { buildOverviewReadModel, type AccountOverviewReadModel } from './AccountOverviewReadModel';
