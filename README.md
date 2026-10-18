@@ -102,26 +102,16 @@ This compiles all TypeScript packages and builds the frontend static assets.
 
 ### Using Docker (Recommended for full stack)
 
-The Dockerfile in `deployment` provides multi-stage builds for backend services and frontend (target 'frontend' for nginx static serve).
-
-To build all Docker images of this example in one go, use the `dockerize.sh` script:
-
-```
-cd deployment
-./dockerize.sh
-```
+Every service is bundled by `bun build` into a single `dist/main.js`, which the stock `oven/bun` image runs directly (mounted as a volume). There are no custom Docker images to build; the frontend is served by the stock `nginx` image from `packages/frontend/build`.
 
 The project uses a single `docker-compose.yml` to orchestrate the entire stack, including PostgreSQL, RabbitMQ, the four backend services (movies, rental, pricing, accounting), the static frontend (nginx), and Caddy reverse proxy.
 
-1. Start the full stack:
+1. Build the bundles (see "How to build"), then start the full stack:
    ```
+   cd deployment
    docker compose up -d
    ```
-2. Run migrations (only on initial setup):
-   ```
-   docker compose exec movies bunx knex migrate:latest
-   ```
-   inside the movies service container after full start.
+2. The database migrations are applied automatically by the one-shot `migrate` service before the backend services start. To re-run them manually: `docker compose run --rm migrate`.
 
 3. Access the application at http://localhost:5001.
 

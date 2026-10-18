@@ -26,10 +26,14 @@ services:
       timeout: 30s
       retries: 3
 
-  movies:
-    image: mattes3/ddd-video-club-movies
+  # One-shot job: applies the Knex migrations before the services start.
+  migrate:
+    image: oven/bun:1
+    working_dir: /app/packages/database
+    command: ['bun', '/app/node_modules/knex/bin/cli.js', 'migrate:latest']
+    volumes:
+      - ..:/app
     environment:
-      NODE_ENV: development
       DATABASE_HOST: db
       DATABASE_PORT: 5432
       DATABASE_NAME: videoclubdb
@@ -40,10 +44,36 @@ services:
         condition: service_healthy
     restart: no
 
-  rental:
-    image: mattes3/ddd-video-club-rental
+  movies:
+    image: oven/bun:1
+    working_dir: /app
+    command: ['bun', 'main.js']
+    volumes:
+      - ../packages/movies/dist/main.js:/app/main.js:ro
     environment:
       NODE_ENV: development
+      PORT: 4000
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: videoclubdb
+      DATABASE_USER: videoclub
+      DATABASE_PASSWORD: videoclubpassword
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    restart: no
+
+  rental:
+    image: oven/bun:1
+    working_dir: /app
+    command: ['bun', 'main.js']
+    volumes:
+      - ../packages/rental/dist/main.js:/app/main.js:ro
+    environment:
+      NODE_ENV: development
+      PORT: 4001
       DATABASE_HOST: db
       DATABASE_PORT: 5432
       DATABASE_NAME: videoclubdb
@@ -54,6 +84,8 @@ services:
       RABBITMQ_USER: guest
       RABBITMQ_PASSWORD: guest
     depends_on:
+      migrate:
+        condition: service_completed_successfully
       db:
         condition: service_healthy
       rabbitmq:
@@ -61,7 +93,11 @@ services:
     restart: no
 
   pricing:
-    image: mattes3/ddd-video-club-pricing
+    image: oven/bun:1
+    working_dir: /app
+    command: ['bun', 'main.js']
+    volumes:
+      - ../packages/pricing/dist/main.js:/app/main.js:ro
     environment:
       NODE_ENV: development
       DATABASE_HOST: db
@@ -74,6 +110,8 @@ services:
       RABBITMQ_USER: guest
       RABBITMQ_PASSWORD: guest
     depends_on:
+      migrate:
+        condition: service_completed_successfully
       db:
         condition: service_healthy
       rabbitmq:
@@ -81,9 +119,14 @@ services:
     restart: no
 
   accounting:
-    image: mattes3/ddd-video-club-accounting
+    image: oven/bun:1
+    working_dir: /app
+    command: ['bun', 'main.js']
+    volumes:
+      - ../packages/accounting/dist/main.js:/app/main.js:ro
     environment:
       NODE_ENV: development
+      PORT: 4002
       DATABASE_HOST: db
       DATABASE_PORT: 5432
       DATABASE_NAME: videoclubdb
@@ -94,6 +137,8 @@ services:
       RABBITMQ_USER: guest
       RABBITMQ_PASSWORD: guest
     depends_on:
+      migrate:
+        condition: service_completed_successfully
       db:
         condition: service_healthy
       rabbitmq:
@@ -101,7 +146,10 @@ services:
     restart: no
 
   frontend:
-    image: mattes3/ddd-video-club-frontend
+    image: nginx:alpine
+    volumes:
+      - ../packages/frontend/build:/usr/share/nginx/html:ro
+      - ../packages/frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     restart: no
 
   caddy:
