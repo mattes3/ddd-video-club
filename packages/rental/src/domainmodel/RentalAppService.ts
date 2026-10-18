@@ -1,7 +1,9 @@
+import { randomUUID } from 'node:crypto';
+
 import type { EventBus } from '@ddd-video-club-v2/event-bus';
 import { MOVIE_RENTED, type MovieRentedEvent } from '@ddd-video-club-v2/event-types';
 import type { Rental } from './Rental';
-import type { CreateRentalData, RentalRepository } from './RentalRepository';
+import type { RentalRepository } from './RentalRepository';
 import type { RentalViewingReadModel } from './RentalReadModelTypes';
 import { TransactionOnRepoProvider } from '@ddd-video-club-v2/database';
 
@@ -21,14 +23,19 @@ export interface RentalAppService {
 }
 
 // @Factory
-function buildEntityFromCommand(command: RentMovieCommand): CreateRentalData {
+function buildEntityFromCommand(command: RentMovieCommand): Rental {
     const { customerId, movieCategoryName, movieId, movieTitle, startOfRental, endOfRental } =
         command;
 
     const timeDifference = endOfRental.getTime() - startOfRental.getTime();
     const rentalDays = Math.max(1, Math.ceil(timeDifference / (1000 * 60 * 60 * 24)));
 
+    const now = new Date();
+
     return {
+        id: randomUUID(),
+        createdAt: now,
+        updatedAt: now,
         customerId,
         movieCategoryName,
         movieId,
@@ -62,9 +69,8 @@ export function getRentalAppService({
 }): RentalAppService {
     return {
         async rentMovie(command) {
-            const rental = await transact(async (repo) =>
-                repo.createRental(buildEntityFromCommand(command)),
-            );
+            const rental = buildEntityFromCommand(command);
+            await transact(async (repo) => repo.add(rental));
 
             const event: MovieRentedEvent = {
                 rentalId: rental.id,

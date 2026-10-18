@@ -2,6 +2,7 @@ import {
     fromRow,
     fromRowOrUndefined,
     toSnakeCase,
+    toUpsertColumns,
     withTransactionFor,
 } from '@ddd-video-club-v2/database';
 
@@ -9,9 +10,14 @@ import type { Movie } from '../../domainmodel/Movie';
 import type { MovieRepository } from '../../domainmodel/MovieRepository';
 
 export const MovieRepositoryImpl = withTransactionFor<MovieRepository>((tx) => ({
-    async createMovie(movieInput) {
-        const [row] = await tx`INSERT INTO dddvc.movies ${tx(toSnakeCase(movieInput))} RETURNING *`;
-        return fromRow<Movie>(row);
+    async add(movie) {
+        await tx`
+            INSERT INTO dddvc.movies ${tx(toSnakeCase(movie))}
+            ON CONFLICT (id) DO UPDATE SET ${tx(toUpsertColumns(movie))}`;
+    },
+
+    async remove(movie) {
+        await tx`DELETE FROM dddvc.movies WHERE id = ${movie.id}`;
     },
 
     async findMovies() {
@@ -22,17 +28,5 @@ export const MovieRepositoryImpl = withTransactionFor<MovieRepository>((tx) => (
     async getMovieById(movieId) {
         const [row] = await tx`SELECT * FROM dddvc.movies WHERE id = ${movieId}`;
         return fromRowOrUndefined<Movie>(row);
-    },
-
-    async updateMovie(movieId, movieInput) {
-        const [row] = await tx`
-            UPDATE dddvc.movies SET ${tx(toSnakeCase(movieInput))}
-            WHERE id = ${movieId} RETURNING *`;
-        return fromRow<Movie>(row);
-    },
-
-    async deleteMovie(movieId) {
-        const rows = await tx`DELETE FROM dddvc.movies WHERE id = ${movieId} RETURNING id`;
-        return rows.length;
     },
 }));

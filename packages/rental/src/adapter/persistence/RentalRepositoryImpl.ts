@@ -2,6 +2,7 @@ import {
     fromRow,
     fromRowOrUndefined,
     toSnakeCase,
+    toUpsertColumns,
     withTransactionFor,
 } from '@ddd-video-club-v2/database';
 
@@ -9,9 +10,14 @@ import type { Rental } from '../../domainmodel/Rental';
 import type { RentalRepository } from '../../domainmodel/RentalRepository';
 
 export const RentalRepositoryImpl = withTransactionFor<RentalRepository>((tx) => ({
-    async createRental(rentalInput) {
-        const [row] = await tx`INSERT INTO dddvc.rentals ${tx(toSnakeCase(rentalInput))} RETURNING *`;
-        return fromRow<Rental>(row);
+    async add(rental) {
+        await tx`
+            INSERT INTO dddvc.rentals ${tx(toSnakeCase(rental))}
+            ON CONFLICT (id) DO UPDATE SET ${tx(toUpsertColumns(rental))}`;
+    },
+
+    async remove(rental) {
+        await tx`DELETE FROM dddvc.rentals WHERE id = ${rental.id}`;
     },
 
     async findRentals() {

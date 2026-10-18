@@ -1,17 +1,18 @@
 import type { Movie } from './Movie';
 
-export type CreateMovieData = Omit<Movie, 'id' | 'createdAt' | 'updatedAt'>;
-export type UpdateMovieData = Partial<Omit<Movie, 'id' | 'createdAt' | 'updatedAt'>>;
-
 // @Repository
 export interface MovieRepository {
-    createMovie(movieInput: CreateMovieData): Promise<Movie>;
+    /**
+     * Idempotent: adds the movie, or overwrites the stored state if a movie with that ID exists.
+     */
+    add(movie: Movie): Promise<void>;
+
+    /**
+     * Idempotent: removes the movie, does nothing if it is not there.
+     */
+    remove(movie: Movie): Promise<void>;
 
     findMovies(): Promise<Movie[]>;
 
     getMovieById(movieId: string): Promise<Movie | undefined>;
-
-    updateMovie(movieId: string, movieInput: UpdateMovieData): Promise<Movie>;
-
-    deleteMovie(movieId: string): Promise<number | undefined>;
 }

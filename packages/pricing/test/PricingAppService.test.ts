@@ -38,7 +38,11 @@ describe('Price calculation for a movie rental', () => {
         };
 
         const mockRepo: DiscountCampaignRepository = {
-            async createDiscountCampaign(discountCampaignInput) {
+            async add(discountCampaign) {
+                throw new Error('should not be called');
+            },
+
+            async remove(discountCampaign) {
                 throw new Error('should not be called');
             },
 

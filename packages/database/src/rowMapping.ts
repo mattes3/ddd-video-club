@@ -25,3 +25,13 @@ export function fromRow<T>(row: Record<string, unknown>): T {
 export function fromRowOrUndefined<T>(row: Record<string, unknown> | undefined): T | undefined {
     return row ? fromRow<T>(row) : undefined;
 }
+
+/**
+ * Columns to overwrite when an existing row is upserted:
+ * everything except the primary key and the creation timestamp.
+ */
+export function toUpsertColumns(obj: object): Record<string, unknown> {
+    return Object.fromEntries(
+        Object.entries(toSnakeCase(obj)).filter(([key]) => key !== 'id' && key !== 'created_at'),
+    );
+}

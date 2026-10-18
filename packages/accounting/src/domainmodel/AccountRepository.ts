@@ -1,20 +1,19 @@
 import type { Account, Entry } from './Account';
 
-export type CreateAccountData = Omit<
-    Account,
-    'id' | 'createdAt' | 'updatedAt' | 'entries' | 'createEntry' | 'updateBalance'
->;
-export type UpdateAccountData = Partial<
-    Omit<Account, 'id' | 'createdAt' | 'updatedAt' | 'entries' | 'createEntry' | 'updateBalance'>
->;
-
 // @Repository
 export interface AccountRepository {
-    createAccount(accountInput: CreateAccountData): Promise<Account>;
+    /**
+     * Idempotent: adds the account, or overwrites the stored state if an account with that ID
+     * exists. Persists the account's own fields only, not its entries (see addEntryToAccount).
+     */
+    add(account: Account): Promise<void>;
+
+    /**
+     * Idempotent: removes the account (and its entries), does nothing if it is not there.
+     */
+    remove(account: Account): Promise<void>;
 
     addEntryToAccount(entry: Entry): Promise<Entry>;
-
-    updateAccount(accountId: string, accountInput: UpdateAccountData): Promise<Account>;
 
     findAccounts(): Promise<Account[]>;
 

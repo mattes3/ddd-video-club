@@ -1,15 +1,16 @@
 import type { DiscountCampaign } from './DiscountCampaign';
 
-export type CreateDiscountCampaignData = Omit<DiscountCampaign, 'id' | 'createdAt' | 'updatedAt'>;
-export type UpdateDiscountCampaignData = Partial<
-    Omit<DiscountCampaign, 'id' | 'createdAt' | 'updatedAt'>
->;
-
 // @Repository
 export interface DiscountCampaignRepository {
-    createDiscountCampaign(
-        discountCampaignInput: CreateDiscountCampaignData,
-    ): Promise<DiscountCampaign>;
+    /**
+     * Idempotent: adds the campaign, or overwrites the stored state if one with that ID exists.
+     */
+    add(discountCampaign: DiscountCampaign): Promise<void>;
+
+    /**
+     * Idempotent: removes the campaign, does nothing if it is not there.
+     */
+    remove(discountCampaign: DiscountCampaign): Promise<void>;
 
     findDiscountCampaignsByMovieCategoryAndDate(
         movieCategoryName: string,

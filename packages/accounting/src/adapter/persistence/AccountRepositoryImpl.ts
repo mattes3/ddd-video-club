@@ -1,6 +1,7 @@
 import {
     fromRow,
     toSnakeCase,
+    toUpsertColumns,
     withTransactionFor,
 } from '@ddd-video-club-v2/database';
 
@@ -38,17 +39,15 @@ export const AccountRepositoryImpl = withTransactionFor<AccountRepository>((tx) 
         );
     },
 
-    async updateAccount(accountId, accountInput) {
-        const [row] = await tx`
-            UPDATE dddvc.accounts SET ${tx(toSnakeCase(accountInput))}
-            WHERE id = ${accountId} RETURNING *`;
-        return hydrateAccount(row);
+    async add(account) {
+        const { entries: _entries, ...ownFields } = account;
+        await tx`
+            INSERT INTO dddvc.accounts ${tx(toSnakeCase(ownFields))}
+            ON CONFLICT (id) DO UPDATE SET ${tx(toUpsertColumns(ownFields))}`;
     },
 
-    async createAccount(accountInput) {
-        const [row] = await tx`
-            INSERT INTO dddvc.accounts ${tx(toSnakeCase(accountInput))} RETURNING *`;
-        return hydrateAccount(row);
+    async remove(account) {
+        await tx`DELETE FROM dddvc.accounts WHERE id = ${account.id}`;
     },
 
     async findAccounts() {

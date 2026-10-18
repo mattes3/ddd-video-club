@@ -2,6 +2,7 @@ import {
     fromRow,
     fromRowOrUndefined,
     toSnakeCase,
+    toUpsertColumns,
     withTransactionFor,
 } from '@ddd-video-club-v2/database';
 
@@ -10,11 +11,14 @@ import type { DiscountCampaignRepository } from '../../domainmodel/DiscountCampa
 
 export const DiscountCampaignRepositoryImpl = withTransactionFor<DiscountCampaignRepository>(
     (tx) => ({
-        async createDiscountCampaign(discountCampaignInput) {
-            const [row] = await tx`
-                INSERT INTO dddvc.discount_campaigns ${tx(toSnakeCase(discountCampaignInput))}
-                RETURNING *`;
-            return fromRow<DiscountCampaign>(row);
+        async add(discountCampaign) {
+            await tx`
+                INSERT INTO dddvc.discount_campaigns ${tx(toSnakeCase(discountCampaign))}
+                ON CONFLICT (id) DO UPDATE SET ${tx(toUpsertColumns(discountCampaign))}`;
+        },
+
+        async remove(discountCampaign) {
+            await tx`DELETE FROM dddvc.discount_campaigns WHERE id = ${discountCampaign.id}`;
         },
 
         async findDiscountCampaignsByMovieCategoryAndDate(movieCategoryName, startOfRentalPeriod) {

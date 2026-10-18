@@ -1,8 +1,11 @@
+import { randomUUID } from 'node:crypto';
+
 import { type TransactionOnRepoProvider } from '@ddd-video-club-v2/database';
 import type { EventBus } from '@ddd-video-club-v2/event-bus';
 import { MOVIE_RENTAL_PRICED, type MovieRentalPricedEvent } from '@ddd-video-club-v2/event-types';
 
 import type { Account } from './Account';
+import { createEntryForAccount, updateBalanceInAccount } from './Account';
 import { buildOverviewReadModel, type AccountOverviewReadModel } from './AccountOverviewReadModel';
 import type { AccountRepository } from './AccountRepository';
 
@@ -54,6 +57,28 @@ export interface AccountAppService {
     consumeMovieRentalPriced(): Promise<void>;
 }
 
+// @Factory
+function buildNewAccount(customerId: string): Account {
+    const now = new Date();
+    const account: Account = {
+        id: randomUUID(),
+        createdAt: now,
+        updatedAt: now,
+        customerId,
+        balance: 0,
+        entries: [],
+        createEntry: () => {
+            throw new Error('not yet initialized');
+        },
+        updateBalance: () => {
+            throw new Error('not yet initialized');
+        },
+    };
+    account.createEntry = createEntryForAccount(account);
+    account.updateBalance = updateBalanceInAccount(account);
+    return account;
+}
+
 /**
  * Inject the necessary dependencies and return a fully usable application service.
  */
@@ -93,7 +118,9 @@ export function getAccountAppService({
         },
 
         async createAccount(customerId) {
-            return transact(async (repo) => repo.createAccount({ customerId, balance: 0 }));
+            const account = buildNewAccount(customerId);
+            await transact(async (repo) => repo.add(account));
+            return account;
         },
 
         async findAccount(accountId) {
@@ -111,7 +138,7 @@ export function getAccountAppService({
                 entry = await repo.addEntryToAccount(entry);
 
                 account.updateBalance(entry);
-                await repo.updateAccount(account.id, { balance: account.balance });
+                await repo.add(account);
             });
         },
     };
@@ -126,6 +153,6 @@ export function getAccountAppService({
         entry = await repo.addEntryToAccount(entry);
 
         account.updateBalance(entry);
-        await repo.updateAccount(account.id, { balance: account.balance });
+        await repo.add(account);
     }
 }
