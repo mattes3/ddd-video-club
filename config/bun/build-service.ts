@@ -1,7 +1,5 @@
 // Bundles a service (src/main.ts of the current directory) into dist/main.js,
 // so that it can be run by a plain `oven/bun` image without node_modules.
-import { readFileSync } from 'node:fs';
-
 // knex lazily requires database drivers that this project does not use.
 const unusedKnexDrivers = [
     'mysql',
@@ -22,21 +20,6 @@ const result = await Bun.build({
     naming: 'main.js',
     target: 'bun',
     external: unusedKnexDrivers,
-    plugins: [
-        {
-            // express-wolox-logger does require(`./${loggerOption}`), which a bundler cannot follow.
-            name: 'wolox-logger-static-require',
-            setup(build) {
-                build.onLoad({ filter: /express-wolox-logger[\\/]lib[\\/]loggers[\\/]index\.js$/ }, args => ({
-                    contents: readFileSync(args.path, 'utf8').replace(
-                        'require(`./${loggerOption}`)',
-                        "require('./pino')",
-                    ),
-                    loader: 'js',
-                }));
-            },
-        },
-    ],
 });
 
 if (!result.success) {

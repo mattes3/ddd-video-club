@@ -1,5 +1,5 @@
 import { initKnexAndObjection } from '@ddd-video-club-v2/database';
-import { logger } from 'express-wolox-logger';
+import { configure, getConsoleSink, getLogger } from '@logtape/logtape';
 import { Model } from 'objection';
 
 import { connectToEventBus } from '@ddd-video-club-v2/event-bus';
@@ -7,7 +7,17 @@ import api from './adapter/http/api';
 import { AccountRepositoryImpl } from './adapter/persistence/AccountRepositoryImpl';
 import { getAccountAppService } from './domainmodel/AccountAppService';
 
+const logger = getLogger(['accounting']);
+
 async function server() {
+    await configure({
+        sinks: { console: getConsoleSink() },
+        loggers: [
+            { category: ['logtape', 'meta'], lowestLevel: 'warning', sinks: ['console'] },
+            { category: [], lowestLevel: 'debug', sinks: ['console'] },
+        ],
+    });
+
     try {
         await initKnexAndObjection();
 
@@ -21,10 +31,10 @@ async function server() {
         const port = process.env.PORT ?? 4002;
         api(appService).listen(port);
 
-        return `Account API Dev server listening on port ${port}`;
+        logger.debug(`Account API Dev server listening on port ${port}`);
     } catch (error: unknown) {
-        logger.error('Account API devServer error', error);
+        logger.error('Account API devServer error: {error}', { error });
     }
 }
 
-server().then(console.log).catch(console.error);
+server().catch(error => logger.error('Unexpected error: {error}', { error }));

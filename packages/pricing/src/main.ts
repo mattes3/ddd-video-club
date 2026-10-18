@@ -1,5 +1,5 @@
 import { initKnexAndObjection } from '@ddd-video-club-v2/database';
-import { logger } from 'express-wolox-logger';
+import { configure, getConsoleSink, getLogger } from '@logtape/logtape';
 import { Model } from 'objection';
 
 import { connectToEventBus } from '@ddd-video-club-v2/event-bus';
@@ -7,7 +7,17 @@ import { DiscountCampaignRepositoryImpl } from './adapter/persistence/DiscountCa
 import { getPricingAppService } from './domainmodel/PricingAppService';
 import { PricingServiceImpl } from './domainmodel/PricingService';
 
+const logger = getLogger(['pricing']);
+
 async function server() {
+    await configure({
+        sinks: { console: getConsoleSink() },
+        loggers: [
+            { category: ['logtape', 'meta'], lowestLevel: 'warning', sinks: ['console'] },
+            { category: [], lowestLevel: 'debug', sinks: ['console'] },
+        ],
+    });
+
     try {
         await initKnexAndObjection();
 
@@ -19,10 +29,10 @@ async function server() {
 
         await appService.consumeMovieRented();
 
-        return `Pricing Dev server listening for events`;
+        logger.debug(`Pricing Dev server listening for events`);
     } catch (error: unknown) {
-        logger.error('Pricing devServer error', error);
+        logger.error('Pricing devServer error: {error}', { error });
     }
 }
 
-server().then(console.log).catch(console.error);
+server().catch(error => logger.error('Unexpected error: {error}', { error }));

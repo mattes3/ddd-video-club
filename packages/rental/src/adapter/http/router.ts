@@ -1,7 +1,9 @@
 import express, { Router } from 'express';
-import { logger } from 'express-wolox-logger';
+import { getLogger } from '@logtape/logtape';
 import nocache from 'nocache';
 import type { RentMovieCommand, RentalAppService } from '../../domainmodel/RentalAppService';
+
+const logger = getLogger(['rental', 'http']);
 
 export function router(appService: RentalAppService): Router {
     const r = Router();
@@ -17,10 +19,6 @@ export function router(appService: RentalAppService): Router {
 
     // endpoint that rents a movie
     r.post('/', nocache(), async (req, res) => {
-        const serializeError = await import('serialize-error').then(
-            ({ serializeError }) => serializeError,
-        );
-
         try {
             const command = validateRentMovieCommand(req.body as Record<string, any>);
 
@@ -34,7 +32,7 @@ export function router(appService: RentalAppService): Router {
                 res.status(400).send('incomplete request');
             }
         } catch (error: unknown) {
-            logger.error('internal error while renting a movie', serializeError(error));
+            logger.error('internal error while renting a movie: {error}', { error });
             res.status(500).send('internal error');
         }
     });

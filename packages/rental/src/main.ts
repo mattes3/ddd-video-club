@@ -1,12 +1,22 @@
 import { initKnexAndObjection } from '@ddd-video-club-v2/database';
-import { logger } from 'express-wolox-logger';
+import { configure, getConsoleSink, getLogger } from '@logtape/logtape';
 
 import { connectToEventBus } from '@ddd-video-club-v2/event-bus';
 import api from './adapter/http/api';
 import { RentalRepositoryImpl } from './adapter/persistence/RentalRepositoryImpl';
 import { getRentalAppService } from './domainmodel/RentalAppService';
 
+const logger = getLogger(['rental']);
+
 async function server() {
+    await configure({
+        sinks: { console: getConsoleSink() },
+        loggers: [
+            { category: ['logtape', 'meta'], lowestLevel: 'warning', sinks: ['console'] },
+            { category: [], lowestLevel: 'debug', sinks: ['console'] },
+        ],
+    });
+
     try {
         await initKnexAndObjection();
 
@@ -18,10 +28,10 @@ async function server() {
         const port = process.env.PORT ?? 4001;
         api(appService).listen(port);
 
-        return `Rental API Dev server listening on port ${port}`;
+        logger.debug(`Rental API Dev server listening on port ${port}`);
     } catch (error: unknown) {
-        logger.error('Rental API devServer error', error);
+        logger.error('Rental API devServer error: {error}', { error });
     }
 }
 
-server().then(console.log).catch(console.error);
+server().catch(error => logger.error('Unexpected error: {error}', { error }));

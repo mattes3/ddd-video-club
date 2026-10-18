@@ -12,6 +12,7 @@
     "typescript": "<5.2.0"
   },
   "dependencies": {
+    "@logtape/logtape": "^1.0.0",
     "amqplib": "^0.10.3"
   },
   "main": "./dist/src/index.js",

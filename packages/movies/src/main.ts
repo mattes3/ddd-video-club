@@ -1,4 +1,4 @@
-import { logger } from 'express-wolox-logger';
+import { configure, getConsoleSink, getLogger } from '@logtape/logtape';
 import { Model } from 'objection';
 import { initKnexAndObjection } from '@ddd-video-club-v2/database';
 
@@ -6,7 +6,17 @@ import api from './adapter/http/api';
 import { MovieRepositoryImpl } from './adapter/persistence/MovieRepositoryImpl';
 import { getMovieAppService } from './domainmodel/MovieAppService';
 
+const logger = getLogger(['movies']);
+
 async function server() {
+    await configure({
+        sinks: { console: getConsoleSink() },
+        loggers: [
+            { category: ['logtape', 'meta'], lowestLevel: 'warning', sinks: ['console'] },
+            { category: [], lowestLevel: 'debug', sinks: ['console'] },
+        ],
+    });
+
     try {
         await initKnexAndObjection();
 
@@ -15,10 +25,10 @@ async function server() {
 
         api(appService).listen(port);
 
-        return `Movie API Dev server listening on port ${port}`;
+        logger.debug(`Movie API Dev server listening on port ${port}`);
     } catch (error: unknown) {
-        logger.error('Movie API devServer error', error);
+        logger.error('Movie API devServer error: {error}', { error });
     }
 }
 
-server().then(console.log).catch(console.error);
+server().catch(error => logger.error('Unexpected error: {error}', { error }));

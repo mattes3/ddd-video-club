@@ -1,12 +1,10 @@
 import amqp from 'amqplib';
-import { logger } from 'express-wolox-logger';
+import { getLogger } from '@logtape/logtape';
 import type { EventBus } from './EventBus';
 
-export async function connectToEventBus(): Promise<EventBus> {
-    const serializeError = await import('serialize-error').then(
-        ({ serializeError }) => serializeError,
-    );
+const logger = getLogger(['event-bus']);
 
+export async function connectToEventBus(): Promise<EventBus> {
     const rabbitUrl = `amqp://${process.env.RABBITMQ_USER || 'guest'}:${
         process.env.RABBITMQ_PASSWORD || 'guest'
     }@${process.env.RABBITMQ_HOST || 'localhost'}:${process.env.RABBITMQ_PORT || 5672}/`;
@@ -28,20 +26,18 @@ export async function connectToEventBus(): Promise<EventBus> {
 
             await ch1.consume(eventTypeName, async (msg) => {
                 if (msg === null) {
-                    console.log('Consumer cancelled by server');
+                    logger.debug('Consumer cancelled by server');
                 } else {
                     const received = msg.content.toString();
-                    console.log('Received:', eventTypeName, received);
+                    logger.debug('Received {eventTypeName}: {received}', { eventTypeName, received });
 
                     try {
                         await callback(JSON.parse(received));
                     } catch (e) {
-                        logger.error(
-                            'Error while processing a',
+                        logger.error('Error while processing a {eventTypeName} event: {error}', {
                             eventTypeName,
-                            'event:',
-                            serializeError(e),
-                        );
+                            error: e,
+                        });
                     } finally {
                         // This is possibly incorrect: It acknowledges
                         // an event even if an error happened.
