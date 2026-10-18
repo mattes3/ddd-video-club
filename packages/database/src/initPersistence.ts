@@ -1,5 +1,8 @@
+import { getLogger } from '@logtape/logtape';
 import Knex from 'knex';
 import { knexSnakeCaseMappers, Model } from 'objection';
+
+const logger = getLogger(['database']);
 
 export async function initKnexAndObjection() {
     const knex = Knex({
@@ -24,9 +27,9 @@ export async function initKnexAndObjection() {
 
         // Initialize knex.
         await knex.raw('SELECT 1');
-        console.log('Initialized Knex: ', Date.now() - start1);
+        logger.debug('Initialized Knex in {elapsedMs} ms', { elapsedMs: Date.now() - start1 });
     } catch (e: unknown) {
-        console.error('Error initializing Knex', JSON.stringify(e, undefined, 2));
+        logger.error('Error initializing Knex: {error}', { error: e });
         return;
     }
 
