@@ -26,11 +26,11 @@ services:
       timeout: 30s
       retries: 3
 
-  # One-shot job: applies the Knex migrations before the services start.
+  # One-shot job: applies the SQL migrations before the services start.
   migrate:
     image: oven/bun:1
     working_dir: /app/packages/database
-    command: ['bun', '/app/node_modules/knex/bin/cli.js', 'migrate:latest']
+    command: ['bun', 'src/migrate.ts', 'up']
     volumes:
       - ..:/app
     environment:

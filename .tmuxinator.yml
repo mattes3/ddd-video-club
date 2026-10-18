@@ -54,7 +54,7 @@ windows:
             - cd packages/database
             - docker compose up -d
             - sleep 25
-            - bunx knex migrate:latest
+            - bun run migrate:up
         - eventbus:
             - printf '\033]2;%s\033\\' 'eventbus'
             - cd packages/event-bus
