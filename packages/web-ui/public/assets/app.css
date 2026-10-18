@@ -1,0 +1,481 @@
+/* DDD Video Club – hand-written styles (formerly Tailwind) */
+
+:root {
+    --primary-50: #edf5f2;
+    --primary-300: #aed581;
+    --primary-500: #8bc34a;
+    --primary-600: #7cb342;
+    --primary-700: #689f38;
+    --secondary-500: #ff9800;
+    --gray-200: #edf2f7;
+    --gray-300: #e1e7ef;
+    --gray-500: #9eacbf;
+    --gray-700: #4a5568;
+    --gray-900: #191f2b;
+    --radius: 0.375rem;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+    --font: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: var(--font);
+    color: var(--gray-900);
+    background: #fff;
+    line-height: 1.5;
+}
+
+img,
+iframe {
+    display: block;
+    max-width: 100%;
+}
+
+.container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        padding: 0 2rem;
+    }
+}
+
+/* --- top bar ---------------------------------------------------------- */
+
+.topbar {
+    border-bottom: 1px solid var(--gray-200);
+    background: #fff;
+}
+
+.topbar-inner {
+    display: flex;
+    align-items: stretch;
+    gap: 2rem;
+    height: 4rem;
+}
+
+.brand {
+    margin: 0;
+    align-self: center;
+    font-size: 1.875rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.brand-video {
+    color: var(--primary-500);
+}
+
+.brand-club {
+    color: var(--secondary-500);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    flex: 1;
+}
+
+.nav-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.25rem 0;
+    border-bottom: 2px solid transparent;
+    color: var(--gray-500);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    border-color: var(--gray-300);
+    color: var(--gray-700);
+}
+
+.nav-link.active {
+    border-color: var(--primary-500);
+    color: var(--gray-900);
+}
+
+.avatar {
+    align-self: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+}
+
+.nav-mobile {
+    display: none;
+}
+
+@media (max-width: 639px) {
+    .topbar-inner {
+        justify-content: space-between;
+    }
+
+    .nav-links,
+    .topbar-inner > .avatar {
+        display: none;
+    }
+
+    .nav-mobile {
+        display: block;
+        align-self: center;
+    }
+
+    .nav-mobile summary {
+        list-style: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        padding: 0.25rem 0.5rem;
+        color: var(--gray-500);
+    }
+
+    .nav-mobile summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .nav-mobile-panel {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 4rem;
+        z-index: 10;
+        background: #fff;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 0.5rem 0 0.75rem;
+    }
+
+    .nav-mobile-panel .nav-link {
+        display: block;
+        padding: 0.5rem 1rem 0.5rem 0.75rem;
+        border-bottom: 0;
+        border-left: 4px solid transparent;
+        font-size: 1rem;
+    }
+
+    .nav-mobile-panel .nav-link.active {
+        background: var(--primary-50);
+        border-color: var(--primary-500);
+        color: var(--primary-700);
+    }
+
+    .nav-mobile-user {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+        padding: 1rem 1rem 0;
+        border-top: 1px solid var(--gray-200);
+    }
+
+    .nav-mobile-user .avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .user-name {
+        font-weight: 500;
+    }
+
+    .user-email {
+        font-size: 0.875rem;
+        color: var(--gray-500);
+    }
+}
+
+/* --- page ------------------------------------------------------------- */
+
+.page {
+    padding: 2.5rem 0;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+main {
+    margin-top: 1rem;
+}
+
+.empty-state {
+    color: var(--gray-700);
+}
+
+/* --- buttons ---------------------------------------------------------- */
+
+.btn-primary,
+.btn-primary-outline {
+    display: inline-flex;
+    align-items: center;
+    height: 2.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-primary {
+    color: #fff;
+    background: var(--primary-600);
+}
+
+.btn-primary:hover {
+    background: var(--primary-700);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+}
+
+.btn-primary-outline {
+    color: var(--primary-700);
+    background: transparent;
+    border-color: var(--primary-300);
+}
+
+.btn-primary-outline:hover {
+    background: var(--primary-50);
+}
+
+.btn-primary:focus-visible,
+.btn-primary-outline:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+
+/* --- movie selection -------------------------------------------------- */
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 767px) {
+    .movie-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.movie-heading {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.poster {
+    position: relative;
+    margin-top: 0.5rem;
+}
+
+.poster-description {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    padding: 1rem;
+    font-size: 0.875rem;
+    color: #fff;
+    background: rgb(0 0 0 / 0.4);
+}
+
+.movie .btn-primary {
+    margin-top: 1rem;
+}
+
+/* --- movie viewing ---------------------------------------------------- */
+
+.viewing {
+    max-width: 960px;
+}
+
+.viewing p {
+    line-height: 2rem;
+}
+
+.video-frame {
+    width: 100%;
+    margin-top: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.video-frame iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: var(--radius);
+}
+
+/* --- account ---------------------------------------------------------- */
+
+th,
+td {
+    padding: 0.75rem;
+}
+
+th {
+    text-align: left;
+}
+
+.amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.balance {
+    font-weight: 700;
+}
+
+/* --- dialog ----------------------------------------------------------- */
+
+dialog {
+    width: 100%;
+    max-width: 28rem;
+    padding: 1.5rem;
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+dialog::backdrop {
+    background: rgb(0 0 0 / 0.3);
+}
+
+dialog h2 {
+    margin: 0;
+    text-align: center;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+}
+
+dialog p {
+    padding: 1.5rem 0 1rem;
+    margin: 0;
+}
+
+/* --- calendar (Cally web component, styled through ::part) ----------- */
+
+calendar-date.calendar {
+    --color-accent: var(--primary-600);
+    --color-text-on-accent: #fff;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 0.75rem;
+}
+
+calendar-date.calendar::part(header) {
+    align-items: center;
+}
+
+calendar-date.calendar::part(heading) {
+    color: var(--gray-500);
+    font-size: 0.875rem;
+}
+
+calendar-month::part(heading) {
+    font-weight: 600;
+}
+
+calendar-date.calendar::part(button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: 9999px;
+    color: var(--gray-700);
+    background: transparent;
+    cursor: pointer;
+}
+
+calendar-date.calendar::part(button):hover {
+    background: var(--primary-50);
+}
+
+calendar-date.calendar svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+}
+
+calendar-date.calendar calendar-month {
+    width: 100%;
+}
+
+calendar-month::part(table) {
+    width: 100%;
+}
+
+calendar-month::part(day) {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+}
+
+calendar-month::part(day):hover {
+    background: var(--primary-50);
+    color: var(--primary-700);
+}
+
+calendar-month::part(today) {
+    font-weight: 700;
+}
+
+calendar-month::part(selected),
+calendar-month::part(selected):hover {
+    background: var(--primary-600);
+    color: #fff;
+}
+
+/* days before `min` are disabled buttons, days rejected by isDateDisallowed are `disallowed` */
+calendar-month::part(day):disabled,
+calendar-month::part(disallowed):hover {
+    background: transparent;
+    color: inherit;
+}
+
+.dialog-error {
+    color: #b91c1c;
+    font-size: 0.875rem;
+}
+
+.dialog-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}

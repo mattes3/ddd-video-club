@@ -10,7 +10,8 @@
             "@ddd-video-club-v2/event-types": ["./packages/event-types"],
             "@ddd-video-club-v2/movies": ["./packages/movies"],
             "@ddd-video-club-v2/pricing": ["./packages/pricing"],
-            "@ddd-video-club-v2/rental": ["./packages/rental"]
+            "@ddd-video-club-v2/rental": ["./packages/rental"],
+            "@ddd-video-club-v2/web-ui": ["./packages/web-ui"]
         }
     }
 }

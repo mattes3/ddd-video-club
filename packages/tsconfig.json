@@ -10,6 +10,7 @@
         { "path": "./event-types" }, 
         { "path": "./movies" },
         { "path": "./pricing" },
-        { "path": "./rental" }
+        { "path": "./rental" },
+        { "path": "./web-ui" }
     ]
 }
