@@ -1,0 +1,3 @@
+[install]
+# hoist all dependencies into the root node_modules (replaces pnpm's shamefully-hoist)
+linker = "hoisted"

@@ -2,9 +2,20 @@
     "name": "@ddd-video-club-v2/root",
     "version": "1.0.0",
     "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "overrides": {
+        "@types/express": "^4.17.13"
+    },
+    "trustedDependencies": [
+        "core-js",
+        "core-js-pure",
+        "esbuild"
+    ],
     "type": "module",
     "scripts": {
-        "build": "tsc -b config/typescript/tsconfig.project-references.json && pnpm -r build",
+        "build": "tsc -b config/typescript/tsconfig.project-references.json && bun run --filter '*' build",
         "tsc": "tsc -b config/typescript/tsconfig.project-references.json",
         "lint": "eslint packages/\\*\\*",
         "prettier": "prettier --write ."
