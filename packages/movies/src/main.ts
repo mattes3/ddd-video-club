@@ -20,9 +20,9 @@ async function server() {
         await initPersistence();
 
         const appService = getMovieAppService(MovieRepositoryImpl);
-        const port = process.env.PORT ?? 4000;
+        const port = Number(process.env.PORT ?? 4000);
 
-        api(appService).listen(port);
+        Bun.serve({ port, fetch: api(appService).fetch });
 
         logger.debug(`Movie API Dev server listening on port ${port}`);
     } catch (error: unknown) {

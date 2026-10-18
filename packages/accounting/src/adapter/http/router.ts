@@ -1,32 +1,31 @@
-import express, { Router } from 'express';
 import { getLogger } from '@logtape/logtape';
-import nocache from 'nocache';
+import { CURRENT_CUSTOMER_ID, nocache } from '@ddd-video-club-v2/web-ui';
+import { Hono } from 'hono';
 import type { AccountAppService } from '../../domainmodel/AccountAppService';
 
 const logger = getLogger(['accounting', 'http']);
 
-const DUMMY_CUSTOMER_ID = '11111111-1111-1111-1111-111111111111';
+export function router(appService: AccountAppService) {
+    const r = new Hono();
 
-export function router(appService: AccountAppService): Router {
-    const r = Router();
-
-    // Parse URL-encoded bodies (as sent by HTML forms)
-    r.use(express.urlencoded({ extended: true }));
-
-    // Parse JSON bodies (as sent by API clients)
-    r.use(express.json());
+    r.use(nocache());
 
     // a test endpoint
-    r.get('/ping', nocache(), (_req, res) => res.type('text/plain').send('Pong!'));
+    r.get('/ping', c => c.text('Pong!'));
 
     // endpoint that gives an overview for the account of the logged-in user
-    r.get('/myaccount', nocache(), async (req, res) => {
+    r.get('/myaccount', async c => {
         try {
-            const accountOverview = await appService.accountOverviewForCustomer(DUMMY_CUSTOMER_ID);
-            res.json(accountOverview);
+            const accountOverview = await appService.accountOverviewForCustomer(CURRENT_CUSTOMER_ID);
+
+            if (accountOverview) {
+                return c.json(accountOverview);
+            } else {
+                return c.text('no such account', 404);
+            }
         } catch (error: unknown) {
             logger.error('internal error while getting an account overview: {error}', { error });
-            res.status(500).send('internal error');
+            return c.text('internal error', 500);
         }
     });
 

@@ -9,13 +9,8 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@types/compression": "^1.7.2",
-    "@types/cookie-parser": "^1",
-    "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.13",
-    "@types/morgan": "^1",
+    "@types/bun": "^1.4.3",
     "@types/node": "^20.8.6",
-    "@types/uuid": "^9",
     "rimraf": "^3.0.2",
     "typescript": "^7.0.2",
     "vitest": "^0.34.6"
@@ -24,14 +19,7 @@
     "@ddd-video-club-v2/database": "workspace:^",
     "@ddd-video-club-v2/event-bus": "workspace:^",
     "@ddd-video-club-v2/event-types": "workspace:^",
-    "@logtape/logtape": "^1.0.0",
-    "compression": "^1.7.4",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "express": "^4.17.3",
-    "morgan": "^1.10.0",
-    "nocache": "^3.0.4",
-    "uuid": "^9.0.0"
+    "@logtape/logtape": "^1.0.0"
   },
   "main": "./dist/src/index.js"
 }

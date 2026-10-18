@@ -8,6 +8,9 @@
     "include": ["src"],
     "references": [
         {
+            "path": "../web-ui"
+        },
+        {
             "path": "../database"
         },
     ]

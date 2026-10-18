@@ -1,28 +1,19 @@
-import compression from 'compression';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import express from 'express';
-
-import morgan from 'morgan';
+import { accessLog } from '@ddd-video-club-v2/web-ui';
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
 
 import type { AccountAppService } from '../../domainmodel/AccountAppService';
+import { pages } from './pages';
 import { router } from './router';
 
 export function api(appService: AccountAppService) {
-    const server = express();
+    const server = new Hono();
 
-    server.use(
-        morgan(
-            '[:date[iso]] ACCESS :method :url  :status  :response-time ms - :res[content-length]',
-        ),
-    );
+    server.use(accessLog('accounting'));
+    server.use('/api/*', cors());
 
-    server.use(compression());
-    server.use(cors());
-    server.use(cookieParser());
-
-    // router must be last so that the above middleware can do its job first
-    server.use('/api/accounts', router(appService));
+    server.route('/api/accounts', router(appService));
+    server.route('/account', pages(appService));
 
     return server;
 }

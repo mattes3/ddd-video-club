@@ -1,29 +1,23 @@
-import express, { Router } from 'express';
-import nocache from 'nocache';
+import { nocache } from '@ddd-video-club-v2/web-ui';
+import { Hono } from 'hono';
 import type { MovieAppService } from '../../domainmodel/MovieAppService';
 
-export function router(appService: MovieAppService): Router {
-    const r = Router();
+export function router(appService: MovieAppService) {
+    const r = new Hono();
 
-    // Parse URL-encoded bodies (as sent by HTML forms)
-    r.use(express.urlencoded({ extended: true }));
+    r.use(nocache());
 
-    // Parse JSON bodies (as sent by API clients)
-    r.use(express.json());
+    r.get('/ping', c => c.text('Pong!'));
 
-    r.get('/ping', nocache(), (_req, res) => res.type('text/plain').send('Pong!'));
+    r.get('/', async c => c.json(await appService.findMoviesToSelectFrom()));
 
-    r.get('/', nocache(), async (_req, res) => {
-        res.json(await appService.findMoviesToSelectFrom());
-    });
-
-    r.get('/:id', nocache(), async (req, res) => {
-        const movie = await appService.findMovieForViewing(req.params.id);
+    r.get('/:id', async c => {
+        const movie = await appService.findMovieForViewing(c.req.param('id'));
 
         if (movie) {
-            res.json(movie);
+            return c.json(movie);
         } else {
-            res.status(404).send('no such movie');
+            return c.text('no such movie', 404);
         }
     });
 

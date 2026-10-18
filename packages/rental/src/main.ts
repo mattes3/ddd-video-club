@@ -25,8 +25,8 @@ async function server() {
             eventBus: await connectToEventBus(),
         });
 
-        const port = process.env.PORT ?? 4001;
-        api(appService).listen(port);
+        const port = Number(process.env.PORT ?? 4001);
+        Bun.serve({ port, fetch: api(appService).fetch });
 
         logger.debug(`Rental API Dev server listening on port ${port}`);
     } catch (error: unknown) {

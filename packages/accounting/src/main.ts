@@ -27,8 +27,8 @@ async function server() {
 
         await appService.consumeMovieRentalPriced();
 
-        const port = process.env.PORT ?? 4002;
-        api(appService).listen(port);
+        const port = Number(process.env.PORT ?? 4002);
+        Bun.serve({ port, fetch: api(appService).fetch });
 
         logger.debug(`Account API Dev server listening on port ${port}`);
     } catch (error: unknown) {

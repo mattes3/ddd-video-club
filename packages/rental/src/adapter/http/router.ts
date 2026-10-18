@@ -1,70 +1,47 @@
-import express, { Router } from 'express';
 import { getLogger } from '@logtape/logtape';
-import nocache from 'nocache';
-import type { RentMovieCommand, RentalAppService } from '../../domainmodel/RentalAppService';
+import { nocache } from '@ddd-video-club-v2/web-ui';
+import { Hono } from 'hono';
+import type { RentalAppService } from '../../domainmodel/RentalAppService';
+import { readBody, validateRentMovieCommand } from './validation';
 
 const logger = getLogger(['rental', 'http']);
 
-export function router(appService: RentalAppService): Router {
-    const r = Router();
+export function router(appService: RentalAppService) {
+    const r = new Hono();
 
-    // Parse URL-encoded bodies (as sent by HTML forms)
-    r.use(express.urlencoded({ extended: true }));
-
-    // Parse JSON bodies (as sent by API clients)
-    r.use(express.json());
+    r.use(nocache());
 
     // a test endpoint
-    r.get('/ping', nocache(), (_req, res) => res.type('text/plain').send('Pong!'));
+    r.get('/ping', c => c.text('Pong!'));
 
     // endpoint that rents a movie
-    r.post('/', nocache(), async (req, res) => {
+    r.post('/', async c => {
         try {
-            const command = validateRentMovieCommand(req.body as Record<string, any>);
+            const command = validateRentMovieCommand(await readBody(c));
 
             if (command) {
                 const newRentalId = await appService.rentMovie(command);
-                res.status(201).location(`/api/rentals/${newRentalId}`).json({
-                    id: newRentalId,
-                    message: 'Movie rented successfully',
-                });
+                c.header('Location', `/api/rentals/${newRentalId}`);
+                return c.json({ id: newRentalId, message: 'Movie rented successfully' }, 201);
             } else {
-                res.status(400).send('incomplete request');
+                return c.text('incomplete request', 400);
             }
         } catch (error: unknown) {
             logger.error('internal error while renting a movie: {error}', { error });
-            res.status(500).send('internal error');
+            return c.text('internal error', 500);
         }
     });
 
     // endpoint that allows viewing rental data
-    r.get('/:id', nocache(), async (req, res) => {
-        const rental = await appService.viewRental(req.params.id);
+    r.get('/:id', async c => {
+        const rental = await appService.viewRental(c.req.param('id'));
 
         if (rental) {
-            res.json(rental);
+            return c.json(rental);
         } else {
-            res.status(404).send('no such rental');
+            return c.text('no such rental', 404);
         }
     });
 
     return r;
-}
-
-function validateRentMovieCommand(requestBody: Record<string, any>): RentMovieCommand | undefined {
-    const { customerId, movieId, movieCategoryName, movieTitle, startOfRental, endOfRental } =
-        requestBody;
-
-    if (customerId && movieId && movieCategoryName && movieTitle && startOfRental && endOfRental) {
-        return {
-            customerId,
-            movieId,
-            movieCategoryName,
-            movieTitle,
-            startOfRental: new Date(startOfRental as string),
-            endOfRental: new Date(endOfRental as string),
-        };
-    }
-
-    return undefined;
 }
