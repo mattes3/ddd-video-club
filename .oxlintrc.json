@@ -1,0 +1,16 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": ["eslint", "typescript", "unicorn", "oxc"],
+    "categories": {
+        "correctness": "error"
+    },
+    "rules": {
+        "no-unused-vars": "off",
+        "no-useless-escape": "off",
+        "typescript/no-explicit-any": "off",
+        "typescript/no-this-alias": "off",
+        "typescript/no-unsafe-declaration-merging": "off",
+        "typescript/no-empty-function": "off"
+    },
+    "ignorePatterns": ["**/dist/**", "**/assets/**", "**/*.d.ts"]
+}

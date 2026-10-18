@@ -11,7 +11,7 @@
   "devDependencies": {
     "@types/bun": "^1.4.3",
     "rimraf": "^5.0.5",
-    "typescript": "<5.2.0"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "@logtape/logtape": "^1.0.0"
