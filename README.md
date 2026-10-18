@@ -92,7 +92,7 @@ are native `<dialog>` elements. The shared layout, CSS and images live in `packa
 
 ## How to build
 
-Install Node and [bun](https://bun.sh). Then go to the root folder of this project and type
+Install [bun](https://bun.sh). Then go to the root folder of this project and type
 
 ```
 bun install
