@@ -5,12 +5,11 @@ import type { MovieSelectionReadModel, MovieViewingReadModel } from './MovieRead
 
 // @Factory
 function buildSelectionReadModels(movies: Movie[]): MovieSelectionReadModel[] {
-    return movies.map(({ id, title, description, posterUrl, publicationDate, categoryName }) => ({
+    return movies.map(({ id, title, description, posterUrl, categoryName }) => ({
         id,
         title,
         description,
         posterUrl,
-        publicationDate,
         categoryName,
     }));
 }
@@ -21,8 +20,8 @@ function buildViewingReadModel(movie: Movie | undefined): MovieViewingReadModel 
         return undefined;
     }
 
-    const { id, title, description, videoUrl, publicationDate, categoryName } = movie;
-    return { id, title, description, videoUrl, publicationDate, categoryName };
+    const { id, title, description, videoUrl, categoryName } = movie;
+    return { id, title, description, videoUrl, categoryName };
 }
 
 // @ApplicationService

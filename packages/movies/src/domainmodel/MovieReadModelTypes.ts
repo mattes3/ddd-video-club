@@ -5,7 +5,6 @@ export type MovieSelectionReadModel = {
     title: string;
     description: string;
     posterUrl: string;
-    publicationDate: Date;
     categoryName: string;
 };
 
@@ -16,6 +15,5 @@ export type MovieViewingReadModel = {
     title: string;
     description: string;
     videoUrl: string;
-    publicationDate: Date;
     categoryName: string;
 };

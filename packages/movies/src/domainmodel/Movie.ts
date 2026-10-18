@@ -25,11 +25,6 @@ export type Movie = {
     videoUrl: string;
 
     /**
-     * When the movie hit the cinemas
-     */
-    publicationDate: Date;
-
-    /**
      * Category, e.g. "Science Fiction", "Romance", "Action", ...
      */
     categoryName: string;
