@@ -49,8 +49,8 @@ Technological Modules (Infrastructure)
 
 - Database: PostgreSQL via Bun's built-in SQL client, with plain SQL migrations
 - Event Bus: RabbitMQ for asynchronous inter-service communication
-- Reverse Proxy: Caddy server for API routing
-- Frontend: React application with Tailwind CSS
+- Reverse Proxy: Caddy server that routes each URL to the service owning it, and serves the static files
+- Web UI: shared page layout, CSS, images, [htmx](https://htmx.org) and the [Cally](https://wicky.nillia.ms/cally) calendar for the server-rendered pages
 
 Architecture Pattern
 
@@ -62,7 +62,7 @@ Each conceptual module follows DDD layered architecture with ports and adapters:
 
 Adapters:
 
-- HTTP: Express.js REST APIs
+- HTTP: [Hono](https://hono.dev) JSON APIs (`/api/...`) and HTML pages rendered on the server with Hono JSX
 - Persistence: Database implementations using plain SQL (Bun SQL)
 
 Services communicate via domain events published to the event bus (e.g., MOVIE_RENTED event triggers pricing and accounting updates).
@@ -83,7 +83,10 @@ Additionally, there are 3 technological modules:
 - Event Bus (using RabbitMQ)
 - Reverse Proxy (using Caddy Server)
 
-Finally, there is a frontend using React and Tailwind.
+There is no separate frontend. Each service renders the HTML pages of its own bounded context with Hono JSX
+(movies: `/movie-selection` and `/movie/:id/viewing`, rental: the rent dialog under `/rentals`,
+accounting: `/account`). The browser gets plain HTML pages with a little help from htmx 4, and popups
+are native `<dialog>` elements. The shared layout, CSS and images live in `packages/web-ui`.
 
 ![Application architecture](./docs/application-architecture.png)
 
@@ -96,15 +99,15 @@ bun install
 bun run build
 ```
 
-This compiles all TypeScript packages and builds the frontend static assets.
+This compiles all TypeScript packages (with TypeScript 7) and bundles every service.
 
 ## How to run
 
 ### Using Docker (Recommended for full stack)
 
-Every service is bundled by `bun build` into a single `dist/main.js`, which the stock `oven/bun` image runs directly (mounted as a volume). There are no custom Docker images to build; the frontend is served by the stock `nginx` image from `packages/frontend/build`.
+Every service is bundled by `bun build` into a single `dist/main.js`, which the stock `oven/bun` image runs directly (mounted as a volume). There are no custom Docker images to build. Caddy serves the static files (CSS, htmx, images) from `packages/web-ui/public`.
 
-The project uses a single `docker-compose.yml` to orchestrate the entire stack, including PostgreSQL, RabbitMQ, the four backend services (movies, rental, pricing, accounting), the static frontend (nginx), and Caddy reverse proxy.
+The project uses a single `docker-compose.yml` to orchestrate the entire stack, including PostgreSQL, RabbitMQ, the four services (movies, rental, pricing, accounting), and Caddy reverse proxy.
 
 1. Build the bundles (see "How to build"), then start the full stack:
    ```
@@ -160,14 +163,7 @@ caddy run
 
 (port 5001)
 
-#### Start the frontend
-
-```
-cd packages/frontend
-bun run dev
-```
-
-(http://localhost:3000, proxies to 5001)
+Then open http://localhost:5001.
 
 ### Demo Usage
 
