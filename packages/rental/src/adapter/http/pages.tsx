@@ -108,8 +108,7 @@ function RentDialog({ movie, error }: { movie: MovieToRent; error?: string }) {
                     <button
                         type="button"
                         class="btn-primary-outline"
-                        commandfor="rent-dialog"
-                        command="close"
+                        onclick="this.closest('dialog').close()"
                     >
                         Cancel
                     </button>
