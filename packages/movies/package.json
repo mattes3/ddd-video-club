@@ -4,8 +4,8 @@
   "author": "Matthias Bohlen",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development PORT=4000 node dist/src/main.js",
-    "build": "rimraf ./dist && tsc"
+    "dev": "NODE_ENV=development PORT=4000 bun dist/main.js",
+    "build": "bun ../../config/bun/build-service.ts"
   },
   "devDependencies": {
     "@types/compression": "^1.7.2",

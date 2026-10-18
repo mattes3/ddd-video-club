@@ -4,8 +4,8 @@
   "author": "Matthias Bohlen",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development node dist/src/main.js",
-    "build": "rimraf ./dist && tsc",
+    "dev": "NODE_ENV=development bun dist/main.js",
+    "build": "bun ../../config/bun/build-service.ts",
     "test": "vitest"
   },
   "devDependencies": {
