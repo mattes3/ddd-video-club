@@ -5,12 +5,7 @@
     "workspaces": [
         "packages/*"
     ],
-    "overrides": {
-        "@types/express": "^4.17.13"
-    },
     "trustedDependencies": [
-        "core-js",
-        "core-js-pure",
         "esbuild"
     ],
     "type": "module",

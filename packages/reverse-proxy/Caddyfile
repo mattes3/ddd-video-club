@@ -6,6 +6,7 @@ http://localhost:5001 {
 
     encode gzip
 
+    # JSON APIs
     handle /api/movies* {
         reverse_proxy movies:4000
     }
@@ -18,7 +19,24 @@ http://localhost:5001 {
         reverse_proxy accounting:4002
     }
 
+    # HTML pages, each rendered by the bounded context that owns them
+    handle /rentals* {
+        reverse_proxy rental:4001
+    }
+
+    handle /account* {
+        reverse_proxy accounting:4002
+    }
+
+    # static files shared by all pages (CSS, htmx, images)
+    @static path /assets/* /images/* /favicon.ico
+    handle @static {
+        root * {$STATIC_ROOT:../web-ui/public}
+        file_server
+    }
+
+    # everything else: /, /movie-selection, /movie/:id/viewing
     handle {
-        reverse_proxy frontend:80
+        reverse_proxy movies:4000
     }
 }
