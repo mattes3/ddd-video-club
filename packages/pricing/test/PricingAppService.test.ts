@@ -79,7 +79,6 @@ describe('Price calculation for a movie rental', () => {
         const pricingAppService = getPricingAppService({
             eventBus: mockEventBus,
             pricingService: PricingServiceImpl,
-            repo: mockRepo,
             transact: mockTransact,
         });
 
