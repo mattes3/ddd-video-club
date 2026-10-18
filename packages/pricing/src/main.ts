@@ -1,6 +1,5 @@
-import { initKnexAndObjection } from '@ddd-video-club-v2/database';
+import { initPersistence } from '@ddd-video-club-v2/database';
 import { configure, getConsoleSink, getLogger } from '@logtape/logtape';
-import { Model } from 'objection';
 
 import { connectToEventBus } from '@ddd-video-club-v2/event-bus';
 import { DiscountCampaignRepositoryImpl } from './adapter/persistence/DiscountCampaignRepositoryImpl';
@@ -19,7 +18,7 @@ async function server() {
     });
 
     try {
-        await initKnexAndObjection();
+        await initPersistence();
 
         const appService = getPricingAppService({
             transact: DiscountCampaignRepositoryImpl,

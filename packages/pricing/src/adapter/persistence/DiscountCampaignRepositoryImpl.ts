@@ -1,39 +1,35 @@
-import { withTransactionFor } from '@ddd-video-club-v2/database';
-import { Model } from 'objection';
+import {
+    fromRow,
+    fromRowOrUndefined,
+    toSnakeCase,
+    withTransactionFor,
+} from '@ddd-video-club-v2/database';
 
 import type { DiscountCampaign } from '../../domainmodel/DiscountCampaign';
 import type { DiscountCampaignRepository } from '../../domainmodel/DiscountCampaignRepository';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface DiscountCampaignModel extends DiscountCampaign {}
-
-class DiscountCampaignModel extends Model {
-    static get tableName() {
-        return 'dddvc.discount_campaigns';
-    }
-
-    static get idColumn() {
-        return 'id';
-    }
-}
-
 export const DiscountCampaignRepositoryImpl = withTransactionFor<DiscountCampaignRepository>(
-    (trx) => ({
+    (tx) => ({
         async createDiscountCampaign(discountCampaignInput) {
-            return DiscountCampaignModel.query(trx).insert(discountCampaignInput).returning('*');
+            const [row] = await tx`
+                INSERT INTO dddvc.discount_campaigns ${tx(toSnakeCase(discountCampaignInput))}
+                RETURNING *`;
+            return fromRow<DiscountCampaign>(row);
         },
 
         async findDiscountCampaignsByMovieCategoryAndDate(movieCategoryName, startOfRentalPeriod) {
-            return DiscountCampaignModel.query(trx)
-                .where({
-                    movieCategoryName,
-                })
-                .andWhere('startingFrom', '<=', startOfRentalPeriod)
-                .andWhere('validThru', '>=', startOfRentalPeriod);
+            const rows = await tx`
+                SELECT * FROM dddvc.discount_campaigns
+                WHERE movie_category_name = ${movieCategoryName}
+                  AND starting_from <= ${startOfRentalPeriod}
+                  AND valid_thru >= ${startOfRentalPeriod}`;
+            return rows.map((row: Record<string, unknown>) => fromRow<DiscountCampaign>(row));
         },
 
         async getDiscountCampaignById(discountCampaignId) {
-            return DiscountCampaignModel.query(trx).findById(discountCampaignId);
+            const [row] = await tx`
+                SELECT * FROM dddvc.discount_campaigns WHERE id = ${discountCampaignId}`;
+            return fromRowOrUndefined<DiscountCampaign>(row);
         },
     }),
 );

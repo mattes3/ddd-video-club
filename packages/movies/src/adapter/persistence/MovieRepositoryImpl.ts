@@ -1,40 +1,38 @@
-import { withTransactionFor } from '@ddd-video-club-v2/database';
-import { Model } from 'objection';
+import {
+    fromRow,
+    fromRowOrUndefined,
+    toSnakeCase,
+    withTransactionFor,
+} from '@ddd-video-club-v2/database';
 
 import type { Movie } from '../../domainmodel/Movie';
 import type { MovieRepository } from '../../domainmodel/MovieRepository';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface MovieModel extends Movie {}
-
-class MovieModel extends Model {
-    static get tableName() {
-        return 'dddvc.movies';
-    }
-
-    static get idColumn() {
-        return 'id';
-    }
-}
-
-export const MovieRepositoryImpl = withTransactionFor<MovieRepository>((trx) => ({
+export const MovieRepositoryImpl = withTransactionFor<MovieRepository>((tx) => ({
     async createMovie(movieInput) {
-        return MovieModel.query(trx).insert(movieInput).returning('*');
+        const [row] = await tx`INSERT INTO dddvc.movies ${tx(toSnakeCase(movieInput))} RETURNING *`;
+        return fromRow<Movie>(row);
     },
 
     async findMovies() {
-        return MovieModel.query(trx);
+        const rows = await tx`SELECT * FROM dddvc.movies`;
+        return rows.map((row: Record<string, unknown>) => fromRow<Movie>(row));
     },
 
     async getMovieById(movieId) {
-        return MovieModel.query(trx).findById(movieId);
+        const [row] = await tx`SELECT * FROM dddvc.movies WHERE id = ${movieId}`;
+        return fromRowOrUndefined<Movie>(row);
     },
 
     async updateMovie(movieId, movieInput) {
-        return MovieModel.query(trx).updateAndFetchById(movieId, movieInput);
+        const [row] = await tx`
+            UPDATE dddvc.movies SET ${tx(toSnakeCase(movieInput))}
+            WHERE id = ${movieId} RETURNING *`;
+        return fromRow<Movie>(row);
     },
 
     async deleteMovie(movieId) {
-        return MovieModel.query(trx).deleteById(movieId);
+        const rows = await tx`DELETE FROM dddvc.movies WHERE id = ${movieId} RETURNING id`;
+        return rows.length;
     },
 }));

@@ -1,4 +1,4 @@
-import { initKnexAndObjection } from '@ddd-video-club-v2/database';
+import { initPersistence } from '@ddd-video-club-v2/database';
 import { configure, getConsoleSink, getLogger } from '@logtape/logtape';
 
 import { connectToEventBus } from '@ddd-video-club-v2/event-bus';
@@ -18,7 +18,7 @@ async function server() {
     });
 
     try {
-        await initKnexAndObjection();
+        await initPersistence();
 
         const appService = getRentalAppService({
             transact: RentalRepositoryImpl,

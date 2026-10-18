@@ -1,38 +1,42 @@
 import { getLogger } from '@logtape/logtape';
-import Knex from 'knex';
-import { knexSnakeCaseMappers, Model } from 'objection';
+import { SQL } from 'bun';
 
 const logger = getLogger(['database']);
 
-export async function initKnexAndObjection() {
-    const knex = Knex({
-        client: 'postgresql',
-        connection: {
-            database: process.env.DATABASE_NAME || 'videoclubdb',
-            host: process.env.DATABASE_HOST || 'localhost',
-            port: parseInt(process.env.DATABASE_PORT || '5432'),
-            user: process.env.DATABASE_USER || 'videoclub',
-            password: process.env.DATABASE_PASSWORD || 'videoclubpassword',
-            ssl: false,
-        },
-        pool: {
-            min: 0,
-            max: 10,
-        },
-        ...knexSnakeCaseMappers(),
+let sql: SQL | undefined;
+
+export function createSql(): SQL {
+    return new SQL({
+        hostname: process.env.DATABASE_HOST || 'localhost',
+        port: parseInt(process.env.DATABASE_PORT || '5432'),
+        database: process.env.DATABASE_NAME || 'videoclubdb',
+        username: process.env.DATABASE_USER || 'videoclub',
+        password: process.env.DATABASE_PASSWORD || 'videoclubpassword',
+        tls: false,
+        max: 10,
     });
+}
+
+export function getSql(): SQL {
+    if (!sql) {
+        throw new Error('Persistence is not initialized, call initPersistence() first');
+    }
+    return sql;
+}
+
+export async function initPersistence() {
+    const candidate = createSql();
 
     try {
-        const start1 = Date.now();
-
-        // Initialize knex.
-        await knex.raw('SELECT 1');
-        logger.debug('Initialized Knex in {elapsedMs} ms', { elapsedMs: Date.now() - start1 });
+        const start = Date.now();
+        await candidate`SELECT 1`;
+        logger.debug('Initialized database connection in {elapsedMs} ms', {
+            elapsedMs: Date.now() - start,
+        });
     } catch (e: unknown) {
-        logger.error('Error initializing Knex: {error}', { error: e });
+        logger.error('Error initializing database connection: {error}', { error: e });
         return;
     }
 
-    // Give the knex instance to objection.
-    Model.knex(knex);
+    sql = candidate;
 }

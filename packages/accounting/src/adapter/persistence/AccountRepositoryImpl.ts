@@ -1,70 +1,63 @@
-import { withTransactionFor } from '@ddd-video-club-v2/database';
-import { Model } from 'objection';
+import {
+    fromRow,
+    toSnakeCase,
+    withTransactionFor,
+} from '@ddd-video-club-v2/database';
 
 import type { Account, Entry } from '../../domainmodel/Account';
 import { createEntryForAccount, updateBalanceInAccount } from '../../domainmodel/Account';
 import type { AccountRepository } from '../../domainmodel/AccountRepository';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface AccountModel extends Account {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface EntryModel extends Entry {}
+type Row = Record<string, unknown>;
 
-class EntryModel extends Model {
-    static get tableName() {
-        return 'dddvc.account_entries';
-    }
+function hydrateAccount(row: Row, entries: Entry[] = []): Account {
+    const account = fromRow<Account>(row);
+    account.entries = entries;
+    account.createEntry = createEntryForAccount(account);
+    account.updateBalance = updateBalanceInAccount(account);
+    return account;
 }
 
-class AccountModel extends Model {
-    static get tableName() {
-        return 'dddvc.accounts';
-    }
-
-    static get idColumn() {
-        return 'id';
-    }
-
-    static relationMappings = {
-        entries: {
-            relation: Model.HasManyRelation,
-            modelClass: EntryModel,
-            join: {
-                from: 'dddvc.accounts.id',
-                to: 'dddvc.account_entries.accountId',
-            },
-        },
-    };
-
-    constructor() {
-        super();
-        this.createEntry = createEntryForAccount(this);
-        this.updateBalance = updateBalanceInAccount(this);
-    }
-}
-
-export const AccountRepositoryImpl = withTransactionFor<AccountRepository>((trx) => ({
+export const AccountRepositoryImpl = withTransactionFor<AccountRepository>((tx) => ({
     async addEntryToAccount(entry) {
-        return EntryModel.query(trx).insert(entry).returning('*');
+        const [row] = await tx`
+            INSERT INTO dddvc.account_entries ${tx(toSnakeCase(entry))} RETURNING *`;
+        return fromRow<Entry>(row);
     },
 
     async getAccountByCustomerId(customerId) {
-        return AccountModel.query(trx).findOne({ customerId }).withGraphFetched('entries');
+        const [row] = await tx`SELECT * FROM dddvc.accounts WHERE customer_id = ${customerId}`;
+        if (!row) {
+            return undefined;
+        }
+        const entryRows = await tx`
+            SELECT * FROM dddvc.account_entries WHERE account_id = ${row.id}`;
+        return hydrateAccount(
+            row,
+            entryRows.map((entryRow: Row) => fromRow<Entry>(entryRow)),
+        );
     },
 
     async updateAccount(accountId, accountInput) {
-        return AccountModel.query(trx).updateAndFetchById(accountId, accountInput);
+        const [row] = await tx`
+            UPDATE dddvc.accounts SET ${tx(toSnakeCase(accountInput))}
+            WHERE id = ${accountId} RETURNING *`;
+        return hydrateAccount(row);
     },
 
     async createAccount(accountInput) {
-        return AccountModel.query(trx).insert(accountInput).returning('*');
+        const [row] = await tx`
+            INSERT INTO dddvc.accounts ${tx(toSnakeCase(accountInput))} RETURNING *`;
+        return hydrateAccount(row);
     },
 
     async findAccounts() {
-        return AccountModel.query(trx);
+        const rows = await tx`SELECT * FROM dddvc.accounts`;
+        return rows.map((row: Row) => hydrateAccount(row));
     },
 
     async getAccountById(accountId) {
-        return AccountModel.query(trx).findById(accountId);
+        const [row] = await tx`SELECT * FROM dddvc.accounts WHERE id = ${accountId}`;
+        return row ? hydrateAccount(row) : undefined;
     },
 }));

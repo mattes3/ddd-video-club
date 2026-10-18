@@ -1,5 +1,4 @@
-import type { TransactionProvider } from '@ddd-video-club-v2/database';
-import type { Transaction } from 'objection';
+import type { TransactionOnRepoProvider } from '@ddd-video-club-v2/database';
 
 import type { EventBus } from '@ddd-video-club-v2/event-bus';
 import type { MovieRentedEvent } from '@ddd-video-club-v2/event-types';
@@ -39,12 +38,11 @@ describe('Price calculation for a movie rental', () => {
         };
 
         const mockRepo: DiscountCampaignRepository = {
-            async createDiscountCampaign(trx, discountCampaignInput) {
+            async createDiscountCampaign(discountCampaignInput) {
                 throw new Error('should not be called');
             },
 
             async findDiscountCampaignsByMovieCategoryAndDate(
-                trx,
                 movieCategoryName,
                 startOfRentalPeriod,
             ) {
@@ -63,13 +61,15 @@ describe('Price calculation for a movie rental', () => {
                 return result;
             },
 
-            async getDiscountCampaignById(trx, discountCampaignId) {
+            async getDiscountCampaignById(discountCampaignId) {
                 throw new Error('should not be called');
             },
         };
 
-        const mockTransact: TransactionProvider = async function (callback) {
-            return callback({} as Transaction);
+        const mockTransact: TransactionOnRepoProvider<DiscountCampaignRepository> = async function (
+            callback,
+        ) {
+            return callback(mockRepo);
         };
 
         const pricingAppService = getPricingAppService({

@@ -1,32 +1,26 @@
-import { withTransactionFor } from '@ddd-video-club-v2/database';
-import { Model } from 'objection';
+import {
+    fromRow,
+    fromRowOrUndefined,
+    toSnakeCase,
+    withTransactionFor,
+} from '@ddd-video-club-v2/database';
 
 import type { Rental } from '../../domainmodel/Rental';
 import type { RentalRepository } from '../../domainmodel/RentalRepository';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface RentalModel extends Rental {}
-
-class RentalModel extends Model {
-    static get tableName() {
-        return 'dddvc.rentals';
-    }
-
-    static get idColumn() {
-        return 'id';
-    }
-}
-
-export const RentalRepositoryImpl = withTransactionFor<RentalRepository>((trx) => ({
+export const RentalRepositoryImpl = withTransactionFor<RentalRepository>((tx) => ({
     async createRental(rentalInput) {
-        return RentalModel.query(trx).insert(rentalInput).returning('*');
+        const [row] = await tx`INSERT INTO dddvc.rentals ${tx(toSnakeCase(rentalInput))} RETURNING *`;
+        return fromRow<Rental>(row);
     },
 
     async findRentals() {
-        return RentalModel.query(trx);
+        const rows = await tx`SELECT * FROM dddvc.rentals`;
+        return rows.map((row: Record<string, unknown>) => fromRow<Rental>(row));
     },
 
     async getRentalById(rentalId) {
-        return RentalModel.query(trx).findById(rentalId);
+        const [row] = await tx`SELECT * FROM dddvc.rentals WHERE id = ${rentalId}`;
+        return fromRowOrUndefined<Rental>(row);
     },
 }));

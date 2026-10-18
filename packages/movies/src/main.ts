@@ -1,6 +1,5 @@
 import { configure, getConsoleSink, getLogger } from '@logtape/logtape';
-import { Model } from 'objection';
-import { initKnexAndObjection } from '@ddd-video-club-v2/database';
+import { initPersistence } from '@ddd-video-club-v2/database';
 
 import api from './adapter/http/api';
 import { MovieRepositoryImpl } from './adapter/persistence/MovieRepositoryImpl';
@@ -18,7 +17,7 @@ async function server() {
     });
 
     try {
-        await initKnexAndObjection();
+        await initPersistence();
 
         const appService = getMovieAppService(MovieRepositoryImpl);
         const port = process.env.PORT ?? 4000;

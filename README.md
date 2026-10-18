@@ -47,7 +47,7 @@ Conceptual Modules (Business Logic)
 
 Technological Modules (Infrastructure)
 
-- Database: PostgreSQL with Knex migrations and Objection.js ORM
+- Database: PostgreSQL via Bun's built-in SQL client, with plain SQL migrations
 - Event Bus: RabbitMQ for asynchronous inter-service communication
 - Reverse Proxy: Caddy server for API routing
 - Frontend: React application with Tailwind CSS
@@ -63,7 +63,7 @@ Each conceptual module follows DDD layered architecture with ports and adapters:
 Adapters:
 
 - HTTP: Express.js REST APIs
-- Persistence: Database implementations using Objection.js
+- Persistence: Database implementations using plain SQL (Bun SQL)
 
 Services communicate via domain events published to the event bus (e.g., MOVIE_RENTED event triggers pricing and accounting updates).
 
@@ -129,7 +129,7 @@ For local development without Docker:
 cd packages/database
 docker-compose up -d
 sleep 30
-bunx knex migrate:latest
+bun run migrate:up
 ```
 
 #### Start the event bus
