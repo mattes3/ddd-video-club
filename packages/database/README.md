@@ -12,5 +12,4 @@ bun run migrate:up        # apply all pending migrations
 bun run migrate:down      # revert the latest migration (or: bun src/migrate.ts down 3)
 ```
 
-Applied migrations are tracked in `public.schema_migrations`. Databases that were
-created with the former Knex migrations must be recreated (drop the Postgres volume).
+Applied migrations are tracked in `public.schema_migrations`.
