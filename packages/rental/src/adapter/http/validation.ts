@@ -1,3 +1,4 @@
+import { isUuid } from '@ddd-video-club-v2/database';
 import type { Context } from 'hono';
 import type { RentMovieCommand } from '../../domainmodel/RentalAppService';
 
@@ -13,7 +14,15 @@ export function validateRentMovieCommand(
     const { customerId, movieId, movieCategoryName, movieTitle, startOfRental, endOfRental } =
         requestBody;
 
-    if (customerId && movieId && movieCategoryName && movieTitle && startOfRental && endOfRental) {
+    // the IDs go into uuid columns, so anything else is a bad request, not an internal error
+    if (
+        isUuid(customerId) &&
+        isUuid(movieId) &&
+        movieCategoryName &&
+        movieTitle &&
+        startOfRental &&
+        endOfRental
+    ) {
         const command = {
             customerId,
             movieId,

@@ -1,6 +1,7 @@
 import {
     fromRow,
     fromRowOrUndefined,
+    isUuid,
     toSnakeCase,
     toUpsertColumns,
     withTransactionFor,
@@ -26,6 +27,9 @@ export const MovieRepositoryImpl = withTransactionFor<MovieRepository>((tx) => (
     },
 
     async getMovieById(movieId) {
+        if (!isUuid(movieId)) {
+            return undefined;
+        }
         const [row] = await tx`SELECT * FROM dddvc.movies WHERE id = ${movieId}`;
         return fromRowOrUndefined<Movie>(row);
     },

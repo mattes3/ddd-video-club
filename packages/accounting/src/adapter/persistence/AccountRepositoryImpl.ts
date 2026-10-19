@@ -1,5 +1,6 @@
 import {
     fromRow,
+    isUuid,
     toSnakeCase,
     toUpsertColumns,
     withTransactionFor,
@@ -27,6 +28,9 @@ export const AccountRepositoryImpl = withTransactionFor<AccountRepository>((tx) 
     },
 
     async getAccountByCustomerId(customerId) {
+        if (!isUuid(customerId)) {
+            return undefined;
+        }
         const [row] = await tx`SELECT * FROM dddvc.accounts WHERE customer_id = ${customerId}`;
         if (!row) {
             return undefined;
@@ -56,6 +60,9 @@ export const AccountRepositoryImpl = withTransactionFor<AccountRepository>((tx) 
     },
 
     async getAccountById(accountId) {
+        if (!isUuid(accountId)) {
+            return undefined;
+        }
         const [row] = await tx`SELECT * FROM dddvc.accounts WHERE id = ${accountId}`;
         return row ? hydrateAccount(row) : undefined;
     },

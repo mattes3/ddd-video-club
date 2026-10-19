@@ -1,6 +1,7 @@
 import {
     fromRow,
     fromRowOrUndefined,
+    isUuid,
     toSnakeCase,
     toUpsertColumns,
     withTransactionFor,
@@ -26,6 +27,9 @@ export const RentalRepositoryImpl = withTransactionFor<RentalRepository>((tx) =>
     },
 
     async getRentalById(rentalId) {
+        if (!isUuid(rentalId)) {
+            return undefined;
+        }
         const [row] = await tx`SELECT * FROM dddvc.rentals WHERE id = ${rentalId}`;
         return fromRowOrUndefined<Rental>(row);
     },

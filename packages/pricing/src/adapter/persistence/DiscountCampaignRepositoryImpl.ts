@@ -1,6 +1,7 @@
 import {
     fromRow,
     fromRowOrUndefined,
+    isUuid,
     toSnakeCase,
     toUpsertColumns,
     withTransactionFor,
@@ -31,6 +32,9 @@ export const DiscountCampaignRepositoryImpl = withTransactionFor<DiscountCampaig
         },
 
         async getDiscountCampaignById(discountCampaignId) {
+            if (!isUuid(discountCampaignId)) {
+                return undefined;
+            }
             const [row] = await tx`
                 SELECT * FROM dddvc.discount_campaigns WHERE id = ${discountCampaignId}`;
             return fromRowOrUndefined<DiscountCampaign>(row);
