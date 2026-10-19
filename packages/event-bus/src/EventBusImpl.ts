@@ -24,6 +24,11 @@ export async function connectToEventBus(): Promise<EventBus> {
             const ch1 = await conn.createChannel();
             await ch1.assertQueue(eventTypeName);
 
+            // Handle one event at a time. Without this, RabbitMQ pushes all pending events at once
+            // and the callbacks run concurrently, e.g. two transactions that read-modify-write
+            // the same account balance, so that one of the updates gets lost.
+            await ch1.prefetch(1);
+
             await ch1.consume(eventTypeName, async (msg) => {
                 if (msg === null) {
                     logger.debug('Consumer cancelled by server');
