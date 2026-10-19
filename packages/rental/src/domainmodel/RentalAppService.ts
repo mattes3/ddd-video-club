@@ -2,19 +2,13 @@ import { randomUUID } from 'node:crypto';
 
 import type { EventBus } from '@ddd-video-club-v2/event-bus';
 import { MOVIE_RENTED, type MovieRentedEvent } from '@ddd-video-club-v2/event-types';
+import type { TransactionOnRepoProvider } from '@ddd-video-club-v2/database';
 import type { Rental } from './Rental';
+import type { RentMovieCommand } from './RentalCommandTypes';
 import type { RentalRepository } from './RentalRepository';
 import type { RentalViewingReadModel } from './RentalReadModelTypes';
-import { TransactionOnRepoProvider } from '@ddd-video-club-v2/database';
 
-export type RentMovieCommand = {
-    customerId: string;
-    movieId: string;
-    movieCategoryName: string;
-    movieTitle: string;
-    startOfRental: Date;
-    endOfRental: Date;
-};
+export type { RentMovieCommand };
 
 // @ApplicationService
 export interface RentalAppService {
