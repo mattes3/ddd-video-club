@@ -95,11 +95,13 @@ export function getAccountAppService({
                 MOVIE_RENTAL_PRICED,
                 async (movieRentalPriced: MovieRentalPricedEvent) => {
                     await transact(async (repo) => {
-                        const account = await repo.getAccountByCustomerId(
+                        // the first rental of a customer opens their account
+                        let account = await repo.getAccountByCustomerId(
                             movieRentalPriced.customerId,
                         );
                         if (!account) {
-                            return;
+                            account = buildNewAccount(movieRentalPriced.customerId);
+                            await repo.add(account);
                         }
 
                         const { movieTitle, movieCategoryName, daysRented } = movieRentalPriced;
@@ -134,11 +136,7 @@ export function getAccountAppService({
                     throw new Error('invalid accountId');
                 }
 
-                let entry = account.createEntry(title, amount);
-                entry = await repo.addEntryToAccount(entry);
-
-                account.updateBalance(entry);
-                await repo.add(account);
+                await internalCreateEntry(repo, account, title, amount);
             });
         },
     };
