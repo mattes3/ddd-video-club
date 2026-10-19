@@ -34,8 +34,10 @@ export async function initPersistence() {
             elapsedMs: Date.now() - start,
         });
     } catch (e: unknown) {
+        // fail fast: a service without a database could only answer every request with an error
         logger.error('Error initializing database connection: {error}', { error: e });
-        return;
+        await candidate.close();
+        throw e;
     }
 
     sql = candidate;
