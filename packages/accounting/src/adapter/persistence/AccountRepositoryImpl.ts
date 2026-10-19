@@ -36,7 +36,8 @@ export const AccountRepositoryImpl = withTransactionFor<AccountRepository>((tx) 
             return undefined;
         }
         const entryRows = await tx`
-            SELECT * FROM dddvc.account_entries WHERE account_id = ${row.id}`;
+            SELECT * FROM dddvc.account_entries WHERE account_id = ${row.id}
+            ORDER BY created_at`;
         return hydrateAccount(
             row,
             entryRows.map((entryRow: Row) => fromRow<Entry>(entryRow)),
